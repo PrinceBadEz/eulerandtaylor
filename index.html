@@ -1,22 +1,2405 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Taylor Series for e^x</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Taylor Series Explorer | Asia School of Business</title>
 
   <style>
-    /* visual design goes here */
+    :root {
+      --asb-pink: #d81b60;
+      --asb-pink-dark: #b71550;
+      --asb-pink-light: #fbe8f0;
+
+      --navy: #15243a;
+      --text: #242933;
+      --muted: #68707d;
+
+      --background: #f5f6f8;
+      --card: #ffffff;
+      --border: #e0e3e8;
+
+      --true-line: #182333;
+      --taylor-line: #d81b60;
+      --error-line: #8c4a78;
+
+      --success: #16845b;
+      --warning-bg: #fff7e8;
+      --warning-border: #f1ca7c;
+
+      --shadow:
+        0 8px 24px rgba(20, 30, 45, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    .top-band {
+      height: 8px;
+      background: var(--asb-pink);
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 24px 28px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 30px;
+    }
+
+    .brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--asb-pink);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(28px, 4vw, 43px);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+    }
+
+    .subtitle {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 680px;
+    }
+
+    .course-label {
+      color: var(--muted);
+      text-align: right;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .course-label strong {
+      color: var(--navy);
+      display: block;
+      font-size: 14px;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================== */
+
+    main {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 30px 28px 55px;
+    }
+
+    .intro-card {
+      background: var(--navy);
+      color: white;
+      padding: 23px 26px;
+      border-radius: 13px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .intro-card strong {
+      color: white;
+    }
+
+    .intro-card .question {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .intro-card p {
+      margin: 0;
+      color: #e8edf4;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.75fr) minmax(300px, 0.85fr);
+      gap: 23px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 17px 21px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-header h2,
+    .card-header h3 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--navy);
+    }
+
+    .card-body {
+      padding: 21px;
+    }
+
+    /* =========================
+       GRAPH
+    ========================== */
+
+    .graph-wrap {
+      width: 100%;
+      height: 470px;
+      position: relative;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .legend-line {
+      width: 26px;
+      height: 4px;
+      border-radius: 4px;
+    }
+
+    .legend-true {
+      background: var(--true-line);
+    }
+
+    .legend-taylor {
+      background: var(--taylor-line);
+    }
+
+    .legend-point {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--asb-pink);
+    }
+
+    /* =========================
+       CONTROLS
+    ========================== */
+
+    .control-block {
+      margin-bottom: 27px;
+    }
+
+    .control-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .control-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .control-title label {
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .control-value {
+      background: var(--asb-pink-light);
+      color: var(--asb-pink-dark);
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--asb-pink);
+      cursor: pointer;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      color: #8a909a;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    button {
+      border: none;
+      font-family: inherit;
+      cursor: pointer;
+      border-radius: 8px;
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        background 0.12s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-btn {
+      width: 100%;
+      background: var(--asb-pink);
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 12px 16px;
+      box-shadow:
+        0 5px 13px rgba(216, 27, 96, 0.2);
+    }
+
+    .primary-btn:hover {
+      background: var(--asb-pink-dark);
+    }
+
+    .secondary-btn {
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--navy);
+      padding: 8px 13px;
+      font-weight: 700;
+    }
+
+    .secondary-btn:hover {
+      border-color: var(--asb-pink);
+      color: var(--asb-pink);
+    }
+
+    /* =========================
+       FORMULA
+    ========================== */
+
+    .formula-card {
+      border-left: 5px solid var(--asb-pink);
+      background: #fffafd;
+      padding: 18px 19px;
+      border-radius: 6px;
+      margin-bottom: 23px;
+    }
+
+    .formula-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .formula {
+      color: var(--navy);
+      font-family:
+        "Times New Roman",
+        serif;
+      font-size: 21px;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-bottom: 3px;
+    }
+
+    /* =========================
+       METRIC CARDS
+    ========================== */
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+    }
+
+    .metric {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 13px;
+      background: #fafbfc;
+    }
+
+    .metric-name {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .metric-value {
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 18px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric.highlight {
+      border-color: #f3b6cb;
+      background: var(--asb-pink-light);
+    }
+
+    .metric.highlight .metric-value {
+      color: var(--asb-pink-dark);
+    }
+
+    /* =========================
+       MESSAGE BOX
+    ========================== */
+
+    .insight {
+      margin-top: 18px;
+      padding: 14px 15px;
+      border-radius: 8px;
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: #5f4a20;
+      font-size: 13px;
+    }
+
+    .success {
+      background: #eefaf5;
+      border-color: #9bd7bf;
+      color: #145b41;
+    }
+
+    /* =========================
+       TOGGLES
+    ========================== */
+
+    .options {
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+      padding-top: 21px;
+    }
+
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 11px;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .option-row input {
+      accent-color: var(--asb-pink);
+      width: 17px;
+      height: 17px;
+    }
+
+    /* =========================
+       ERROR GRAPH
+    ========================== */
+
+    #errorSection {
+      display: none;
+      margin-top: 24px;
+    }
+
+    .small-graph-wrap {
+      height: 260px;
+    }
+
+    /* =========================
+       TABLE
+    ========================== */
+
+    #tableSection {
+      display: none;
+      margin-top: 24px;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 650px;
+      font-size: 14px;
+    }
+
+    th {
+      background: var(--navy);
+      color: white;
+      text-align: right;
+      padding: 11px 12px;
+    }
+
+    th:first-child {
+      text-align: left;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    td:first-child {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafbfc;
+    }
+
+    tbody tr.active-row {
+      background: var(--asb-pink-light);
+    }
+
+    /* =========================
+       LEARNING PROMPT
+    ========================== */
+
+    .learning-block {
+      margin-top: 24px;
+      padding: 23px 25px;
+      background: white;
+      border-top: 5px solid var(--asb-pink);
+      border-radius: 11px;
+      box-shadow: var(--shadow);
+    }
+
+    .learning-block h3 {
+      margin: 0 0 8px;
+      color: var(--navy);
+    }
+
+    .learning-block p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      border-top: 1px solid var(--border);
+      color: #888f99;
+      text-align: center;
+      font-size: 12px;
+      padding: 22px 20px 35px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .header-inner {
+        align-items: flex-start;
+      }
+
+      .course-label {
+        display: none;
+      }
+
+      .graph-wrap {
+        height: 390px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      main {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .header-inner {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .graph-wrap {
+        height: 330px;
+      }
+
+      .card-body {
+        padding: 16px;
+      }
+    }
   </style>
 </head>
 
+
 <body>
 
-  <!-- webpage content goes here -->
+  <div class="top-band"></div>
+
+  <header>
+    <div class="header-inner">
+
+      <div>
+        <div class="brand">
+          Asia School of Business
+        </div>
+
+        <h1>
+          Taylor Series Explorer
+        </h1>
+
+        <p class="subtitle">
+          See how a polynomial can approximate the exponential function
+          <strong>e<sup>x</sup></strong> — one term at a time.
+        </p>
+      </div>
+
+      <div class="course-label">
+        <strong>Interactive Learning Activity</strong>
+        Quantitative Methods
+      </div>
+
+    </div>
+  </header>
+
+
+  <main>
+
+    <section class="intro-card">
+
+      <div class="question">
+        How can a polynomial approximate an exponential function?
+      </div>
+
+      <p>
+        Start with just one term. Then add more terms and watch the
+        Taylor polynomial move closer to e<sup>x</sup>.
+      </p>
+
+    </section>
+
+
+    <div class="layout">
+
+      <!-- ==============================
+           LEFT: MAIN GRAPH
+      =============================== -->
+
+      <section>
+
+        <div class="card">
+
+          <div class="card-header">
+            <h2>
+              e<sup>x</sup> and its Taylor approximation
+            </h2>
+
+            <button
+              class="secondary-btn"
+              id="resetBtn"
+            >
+              Reset
+            </button>
+          </div>
+
+
+          <div class="card-body">
+
+            <div class="legend">
+
+              <div class="legend-item">
+                <span class="legend-line legend-true"></span>
+                True e<sup>x</sup>
+              </div>
+
+              <div class="legend-item">
+                <span class="legend-line legend-taylor"></span>
+                Taylor approximation
+              </div>
+
+              <div class="legend-item">
+                <span class="legend-point"></span>
+                Selected x
+              </div>
+
+            </div>
+
+            <div class="graph-wrap">
+              <canvas id="mainCanvas"></canvas>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- ERROR GRAPH -->
+
+        <div
+          class="card"
+          id="errorSection"
+        >
+
+          <div class="card-header">
+            <h3>
+              Approximation error
+            </h3>
+          </div>
+
+          <div class="card-body">
+
+            <div
+              class="legend"
+              style="margin-bottom: 8px;"
+            >
+              Error = e<sup>x</sup> − Taylor approximation
+            </div>
+
+            <div class="small-graph-wrap">
+              <canvas id="errorCanvas"></canvas>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- APPROXIMATION TABLE -->
+
+        <div
+          class="card"
+          id="tableSection"
+        >
+
+          <div class="card-header">
+            <h3>
+              What happens as we add terms?
+            </h3>
+          </div>
+
+          <div class="card-body">
+
+            <div class="table-responsive">
+
+              <table>
+
+                <thead>
+                  <tr>
+                    <th>Terms</th>
+                    <th>Taylor estimate</th>
+                    <th>Actual e<sup>x</sup></th>
+                    <th>Absolute error</th>
+                    <th>Error (%)</th>
+                  </tr>
+                </thead>
+
+                <tbody id="approximationTableBody"></tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ==============================
+           RIGHT: CONTROLS
+      =============================== -->
+
+      <aside>
+
+        <div class="card">
+
+          <div class="card-header">
+            <h2>
+              Explore
+            </h2>
+          </div>
+
+
+          <div class="card-body">
+
+            <!-- FORMULA -->
+
+            <div class="formula-card">
+
+              <div class="formula-label">
+                Current Taylor polynomial
+              </div>
+
+              <div
+                class="formula"
+                id="formulaDisplay"
+              ></div>
+
+            </div>
+
+
+            <!-- TERMS SLIDER -->
+
+            <div class="control-block">
+
+              <div class="control-title">
+
+                <label for="termsSlider">
+                  Number of terms
+                </label>
+
+                <span
+                  class="control-value"
+                  id="termsValue"
+                >
+                  3 terms
+                </span>
+
+              </div>
+
+              <input
+                id="termsSlider"
+                type="range"
+                min="1"
+                max="12"
+                value="3"
+                step="1"
+              />
+
+              <div class="range-labels">
+                <span>1</span>
+                <span>12</span>
+              </div>
+
+            </div>
+
+
+            <!-- ADD TERM BUTTON -->
+
+            <div
+              class="control-block"
+              style="margin-top: -8px;"
+            >
+
+              <button
+                class="primary-btn"
+                id="addTermBtn"
+              >
+                + Add the next term
+              </button>
+
+            </div>
+
+
+            <!-- X SLIDER -->
+
+            <div class="control-block">
+
+              <div class="control-title">
+
+                <label for="xSlider">
+                  Choose x
+                </label>
+
+                <span
+                  class="control-value"
+                  id="xValueLabel"
+                >
+                  x = 1.50
+                </span>
+
+              </div>
+
+              <input
+                id="xSlider"
+                type="range"
+                min="-3"
+                max="3"
+                value="1.5"
+                step="0.05"
+              />
+
+              <div class="range-labels">
+                <span>−3</span>
+                <span>0</span>
+                <span>3</span>
+              </div>
+
+            </div>
+
+
+            <!-- METRICS -->
+
+            <div class="metric-grid">
+
+              <div class="metric">
+                <div class="metric-name">
+                  Actual e<sup>x</sup>
+                </div>
+                <div
+                  class="metric-value"
+                  id="actualValue"
+                ></div>
+              </div>
+
+
+              <div class="metric highlight">
+                <div class="metric-name">
+                  Taylor estimate
+                </div>
+                <div
+                  class="metric-value"
+                  id="estimateValue"
+                ></div>
+              </div>
+
+
+              <div class="metric">
+                <div class="metric-name">
+                  Absolute error
+                </div>
+                <div
+                  class="metric-value"
+                  id="absoluteError"
+                ></div>
+              </div>
+
+
+              <div class="metric">
+                <div class="metric-name">
+                  Percentage error
+                </div>
+                <div
+                  class="metric-value"
+                  id="percentageError"
+                ></div>
+              </div>
+
+            </div>
+
+
+            <!-- INSIGHT -->
+
+            <div
+              class="insight"
+              id="insightBox"
+            ></div>
+
+
+            <!-- OPTIONS -->
+
+            <div class="options">
+
+              <div class="option-row">
+
+                <input
+                  type="checkbox"
+                  id="showError"
+                />
+
+                <label for="showError">
+                  Show error graph
+                </label>
+
+              </div>
+
+
+              <div class="option-row">
+
+                <input
+                  type="checkbox"
+                  id="showTable"
+                />
+
+                <label for="showTable">
+                  Show approximation table
+                </label>
+
+              </div>
+
+
+              <div class="option-row">
+
+                <input
+                  type="checkbox"
+                  id="showGuide"
+                  checked
+                />
+
+                <label for="showGuide">
+                  Highlight expansion point x = 0
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+
+    <!-- ==============================
+         LEARNING PROMPT
+    =============================== -->
+
+    <section class="learning-block">
+
+      <h3>
+        What do you notice?
+      </h3>
+
+      <p>
+        Try keeping the number of terms fixed while moving x farther from
+        zero. Then add more terms. Where is the approximation most accurate?
+        How does adding more terms change the range over which the polynomial
+        closely follows e<sup>x</sup>?
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    Taylor Series Explorer · Interactive classroom activity
+  </footer>
+
+
 
   <script>
-    // Taylor-series calculations
-    // slider controls
-    // graph drawing
+
+    /* ============================================================
+       SETTINGS
+    ============================================================ */
+
+    const MAX_TERMS = 12;
+
+    let terms = 3;
+    let selectedX = 1.5;
+    let showGuide = true;
+
+
+    /* ============================================================
+       DOM ELEMENTS
+    ============================================================ */
+
+    const termsSlider =
+      document.getElementById("termsSlider");
+
+    const xSlider =
+      document.getElementById("xSlider");
+
+    const termsValue =
+      document.getElementById("termsValue");
+
+    const xValueLabel =
+      document.getElementById("xValueLabel");
+
+    const formulaDisplay =
+      document.getElementById("formulaDisplay");
+
+    const actualValue =
+      document.getElementById("actualValue");
+
+    const estimateValue =
+      document.getElementById("estimateValue");
+
+    const absoluteError =
+      document.getElementById("absoluteError");
+
+    const percentageError =
+      document.getElementById("percentageError");
+
+    const insightBox =
+      document.getElementById("insightBox");
+
+    const addTermBtn =
+      document.getElementById("addTermBtn");
+
+    const resetBtn =
+      document.getElementById("resetBtn");
+
+    const showError =
+      document.getElementById("showError");
+
+    const showTable =
+      document.getElementById("showTable");
+
+    const showGuideCheckbox =
+      document.getElementById("showGuide");
+
+    const errorSection =
+      document.getElementById("errorSection");
+
+    const tableSection =
+      document.getElementById("tableSection");
+
+    const tableBody =
+      document.getElementById("approximationTableBody");
+
+    const mainCanvas =
+      document.getElementById("mainCanvas");
+
+    const errorCanvas =
+      document.getElementById("errorCanvas");
+
+
+
+    /* ============================================================
+       MATHEMATICS
+    ============================================================ */
+
+    function factorial(n) {
+
+      let result = 1;
+
+      for (let i = 2; i <= n; i++) {
+        result *= i;
+      }
+
+      return result;
+    }
+
+
+    function taylorExp(x, numberOfTerms) {
+
+      let sum = 0;
+
+      for (
+        let n = 0;
+        n < numberOfTerms;
+        n++
+      ) {
+
+        sum +=
+          Math.pow(x, n) /
+          factorial(n);
+
+      }
+
+      return sum;
+    }
+
+
+
+    /* ============================================================
+       FORMULA DISPLAY
+    ============================================================ */
+
+    function superscript(n) {
+
+      const map = {
+        "0": "⁰",
+        "1": "¹",
+        "2": "²",
+        "3": "³",
+        "4": "⁴",
+        "5": "⁵",
+        "6": "⁶",
+        "7": "⁷",
+        "8": "⁸",
+        "9": "⁹"
+      };
+
+      return String(n)
+        .split("")
+        .map(d => map[d])
+        .join("");
+    }
+
+
+    function buildFormula(numberOfTerms) {
+
+      const pieces = [];
+
+      for (
+        let n = 0;
+        n < numberOfTerms;
+        n++
+      ) {
+
+        if (n === 0) {
+
+          pieces.push("1");
+
+        } else if (n === 1) {
+
+          pieces.push("x");
+
+        } else {
+
+          pieces.push(
+            `x${superscript(n)}/${n}!`
+          );
+
+        }
+
+      }
+
+      return pieces.join(" + ");
+    }
+
+
+
+    /* ============================================================
+       CANVAS SETUP
+    ============================================================ */
+
+    function setupCanvas(canvas) {
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+      const dpr =
+        window.devicePixelRatio || 1;
+
+      canvas.width =
+        rect.width * dpr;
+
+      canvas.height =
+        rect.height * dpr;
+
+      const ctx =
+        canvas.getContext("2d");
+
+      ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+      );
+
+      return {
+        ctx,
+        width: rect.width,
+        height: rect.height
+      };
+    }
+
+
+
+    /* ============================================================
+       COLOUR HELPER
+    ============================================================ */
+
+    function cssColor(variableName) {
+
+      return getComputedStyle(
+        document.documentElement
+      )
+        .getPropertyValue(variableName)
+        .trim();
+    }
+
+
+
+    /* ============================================================
+       MAIN GRAPH
+    ============================================================ */
+
+    function drawMainGraph() {
+
+      const {
+        ctx,
+        width,
+        height
+      } =
+        setupCanvas(mainCanvas);
+
+
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      const margin = {
+        left: 56,
+        right: 22,
+        top: 18,
+        bottom: 42
+      };
+
+
+      const xMin = -3;
+      const xMax = 3;
+
+      /*
+       We fix the graph vertically so students can compare curves
+       without the axis changing every time.
+      */
+
+      const yMin = -2;
+      const yMax = 22;
+
+
+      function px(x) {
+
+        return (
+          margin.left +
+          ((x - xMin) /
+            (xMax - xMin)) *
+          (
+            width -
+            margin.left -
+            margin.right
+          )
+        );
+      }
+
+
+      function py(y) {
+
+        return (
+          height -
+          margin.bottom -
+          ((y - yMin) /
+            (yMax - yMin)) *
+          (
+            height -
+            margin.top -
+            margin.bottom
+          )
+        );
+      }
+
+
+
+      /* ----------------------------
+         GRID
+      ----------------------------- */
+
+      ctx.lineWidth = 1;
+
+      ctx.font =
+        "12px Arial";
+
+      ctx.fillStyle =
+        "#7a818b";
+
+
+      for (
+        let x = -3;
+        x <= 3;
+        x++
+      ) {
+
+        ctx.beginPath();
+
+        ctx.strokeStyle =
+          x === 0
+            ? "#aab0b8"
+            : "#eceef1";
+
+        ctx.moveTo(
+          px(x),
+          margin.top
+        );
+
+        ctx.lineTo(
+          px(x),
+          height - margin.bottom
+        );
+
+        ctx.stroke();
+
+
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+          x,
+          px(x),
+          height - margin.bottom + 20
+        );
+
+      }
+
+
+
+      for (
+        let y = 0;
+        y <= 20;
+        y += 5
+      ) {
+
+        ctx.beginPath();
+
+        ctx.strokeStyle =
+          y === 0
+            ? "#aab0b8"
+            : "#eceef1";
+
+        ctx.moveTo(
+          margin.left,
+          py(y)
+        );
+
+        ctx.lineTo(
+          width - margin.right,
+          py(y)
+        );
+
+        ctx.stroke();
+
+
+        ctx.textAlign = "right";
+
+        ctx.fillText(
+          y,
+          margin.left - 8,
+          py(y) + 4
+        );
+
+      }
+
+
+
+      /* ----------------------------
+         HIGHLIGHT x = 0
+      ----------------------------- */
+
+      if (showGuide) {
+
+        ctx.save();
+
+        ctx.strokeStyle =
+          cssColor("--asb-pink");
+
+        ctx.globalAlpha = 0.35;
+
+        ctx.lineWidth = 3;
+
+        ctx.setLineDash([
+          6,
+          6
+        ]);
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          px(0),
+          margin.top
+        );
+
+        ctx.lineTo(
+          px(0),
+          height - margin.bottom
+        );
+
+        ctx.stroke();
+
+        ctx.restore();
+
+      }
+
+
+
+      /* ----------------------------
+         DRAW FUNCTION
+      ----------------------------- */
+
+      function drawFunction(
+        fn,
+        color,
+        lineWidth
+      ) {
+
+        ctx.beginPath();
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.lineJoin = "round";
+
+        let started = false;
+
+        const steps = 800;
+
+        for (
+          let i = 0;
+          i <= steps;
+          i++
+        ) {
+
+          const x =
+            xMin +
+            (xMax - xMin) *
+            i /
+            steps;
+
+          const y =
+            fn(x);
+
+
+          if (
+            !Number.isFinite(y) ||
+            y < yMin - 10 ||
+            y > yMax + 10
+          ) {
+
+            started = false;
+            continue;
+          }
+
+
+          const cx = px(x);
+          const cy = py(y);
+
+
+          if (!started) {
+
+            ctx.moveTo(
+              cx,
+              cy
+            );
+
+            started = true;
+
+          } else {
+
+            ctx.lineTo(
+              cx,
+              cy
+            );
+
+          }
+
+        }
+
+        ctx.stroke();
+      }
+
+
+
+      /* True exponential */
+
+      drawFunction(
+        x => Math.exp(x),
+        cssColor("--true-line"),
+        3
+      );
+
+
+
+      /* Taylor polynomial */
+
+      drawFunction(
+        x => taylorExp(x, terms),
+        cssColor("--taylor-line"),
+        3
+      );
+
+
+
+      /* ----------------------------
+         SELECTED X GUIDE
+      ----------------------------- */
+
+      const trueY =
+        Math.exp(selectedX);
+
+      const approxY =
+        taylorExp(
+          selectedX,
+          terms
+        );
+
+
+      ctx.save();
+
+      ctx.strokeStyle =
+        "#bcc1c8";
+
+      ctx.setLineDash([
+        5,
+        5
+      ]);
+
+      ctx.lineWidth = 1.5;
+
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        px(selectedX),
+        margin.top
+      );
+
+      ctx.lineTo(
+        px(selectedX),
+        height - margin.bottom
+      );
+
+      ctx.stroke();
+
+      ctx.restore();
+
+
+
+      /* True value point */
+
+      if (
+        trueY >= yMin &&
+        trueY <= yMax
+      ) {
+
+        ctx.beginPath();
+
+        ctx.fillStyle =
+          cssColor("--true-line");
+
+        ctx.arc(
+          px(selectedX),
+          py(trueY),
+          5.5,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+      }
+
+
+
+      /* Taylor value point */
+
+      if (
+        approxY >= yMin &&
+        approxY <= yMax
+      ) {
+
+        ctx.beginPath();
+
+        ctx.fillStyle =
+          cssColor("--asb-pink");
+
+        ctx.arc(
+          px(selectedX),
+          py(approxY),
+          6,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+      }
+
+
+
+      /* Axis labels */
+
+      ctx.fillStyle =
+        "#5f6670";
+
+      ctx.font =
+        "bold 12px Arial";
+
+
+      ctx.textAlign = "right";
+
+      ctx.fillText(
+        "x",
+        width - margin.right,
+        height - 10
+      );
+
+
+      ctx.save();
+
+      ctx.translate(
+        15,
+        margin.top + 2
+      );
+
+      ctx.textAlign =
+        "left";
+
+      ctx.fillText(
+        "y",
+        0,
+        0
+      );
+
+      ctx.restore();
+
+    }
+
+
+
+    /* ============================================================
+       ERROR GRAPH
+    ============================================================ */
+
+    function drawErrorGraph() {
+
+      if (!showError.checked) {
+        return;
+      }
+
+
+      const {
+        ctx,
+        width,
+        height
+      } =
+        setupCanvas(errorCanvas);
+
+
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      const margin = {
+        left: 58,
+        right: 22,
+        top: 15,
+        bottom: 38
+      };
+
+
+      const xMin = -3;
+      const xMax = 3;
+
+
+      const sampleErrors = [];
+
+      for (
+        let i = 0;
+        i <= 500;
+        i++
+      ) {
+
+        const x =
+          xMin +
+          (xMax - xMin) *
+          i /
+          500;
+
+        sampleErrors.push(
+          Math.exp(x) -
+          taylorExp(
+            x,
+            terms
+          )
+        );
+
+      }
+
+
+      let maxAbsError =
+        Math.max(
+          ...sampleErrors.map(
+            v =>
+              Math.abs(v)
+          ),
+          0.1
+        );
+
+
+      maxAbsError *= 1.12;
+
+
+      const yMin =
+        -maxAbsError;
+
+      const yMax =
+        maxAbsError;
+
+
+      function px(x) {
+
+        return (
+          margin.left +
+          ((x - xMin) /
+            (xMax - xMin)) *
+          (
+            width -
+            margin.left -
+            margin.right
+          )
+        );
+      }
+
+
+      function py(y) {
+
+        return (
+          height -
+          margin.bottom -
+          ((y - yMin) /
+            (yMax - yMin)) *
+          (
+            height -
+            margin.top -
+            margin.bottom
+          )
+        );
+      }
+
+
+
+      /* Zero line */
+
+      ctx.strokeStyle =
+        "#aeb4bd";
+
+      ctx.lineWidth =
+        1.5;
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        margin.left,
+        py(0)
+      );
+
+      ctx.lineTo(
+        width - margin.right,
+        py(0)
+      );
+
+      ctx.stroke();
+
+
+
+      /* x grid */
+
+      ctx.font =
+        "11px Arial";
+
+      ctx.fillStyle =
+        "#7a818b";
+
+
+      for (
+        let x = -3;
+        x <= 3;
+        x++
+      ) {
+
+        ctx.strokeStyle =
+          "#eceef1";
+
+        ctx.lineWidth =
+          1;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          px(x),
+          margin.top
+        );
+
+        ctx.lineTo(
+          px(x),
+          height - margin.bottom
+        );
+
+        ctx.stroke();
+
+
+        ctx.textAlign =
+          "center";
+
+        ctx.fillText(
+          x,
+          px(x),
+          height -
+            margin.bottom +
+            18
+        );
+
+      }
+
+
+
+      /* Error curve */
+
+      ctx.beginPath();
+
+      ctx.strokeStyle =
+        cssColor("--error-line");
+
+      ctx.lineWidth =
+        2.5;
+
+
+      for (
+        let i = 0;
+        i <= 500;
+        i++
+      ) {
+
+        const x =
+          xMin +
+          (xMax - xMin) *
+          i /
+          500;
+
+        const error =
+          Math.exp(x) -
+          taylorExp(
+            x,
+            terms
+          );
+
+
+        if (i === 0) {
+
+          ctx.moveTo(
+            px(x),
+            py(error)
+          );
+
+        } else {
+
+          ctx.lineTo(
+            px(x),
+            py(error)
+          );
+
+        }
+
+      }
+
+
+      ctx.stroke();
+
+
+
+      /* Selected point */
+
+      const selectedError =
+        Math.exp(selectedX) -
+        taylorExp(
+          selectedX,
+          terms
+        );
+
+
+      ctx.beginPath();
+
+      ctx.fillStyle =
+        cssColor("--asb-pink");
+
+      ctx.arc(
+        px(selectedX),
+        py(selectedError),
+        5.5,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+    }
+
+
+
+    /* ============================================================
+       APPROXIMATION TABLE
+    ============================================================ */
+
+    function updateTable() {
+
+      tableBody.innerHTML =
+        "";
+
+
+      const actual =
+        Math.exp(selectedX);
+
+
+      for (
+        let n = 1;
+        n <= MAX_TERMS;
+        n++
+      ) {
+
+        const approximation =
+          taylorExp(
+            selectedX,
+            n
+          );
+
+        const error =
+          Math.abs(
+            actual -
+            approximation
+          );
+
+        const percentage =
+          error /
+          Math.abs(actual) *
+          100;
+
+
+        const row =
+          document.createElement("tr");
+
+
+        if (n === terms) {
+          row.classList.add(
+            "active-row"
+          );
+        }
+
+
+        row.innerHTML = `
+
+          <td>
+            ${n}
+            ${n === 1 ? "term" : "terms"}
+          </td>
+
+          <td>
+            ${formatNumber(approximation)}
+          </td>
+
+          <td>
+            ${formatNumber(actual)}
+          </td>
+
+          <td>
+            ${formatNumber(error)}
+          </td>
+
+          <td>
+            ${percentage.toFixed(3)}%
+          </td>
+
+        `;
+
+
+        tableBody.appendChild(row);
+
+      }
+
+    }
+
+
+
+    /* ============================================================
+       DISPLAY HELPERS
+    ============================================================ */
+
+    function formatNumber(value) {
+
+      if (
+        Math.abs(value) >=
+        10000
+      ) {
+
+        return value.toExponential(4);
+
+      }
+
+      return value.toFixed(5);
+    }
+
+
+
+    function updateInsight(
+      percentageErrorValue
+    ) {
+
+      insightBox.classList.remove(
+        "success"
+      );
+
+
+      if (
+        percentageErrorValue <
+        0.01
+      ) {
+
+        insightBox.classList.add(
+          "success"
+        );
+
+        insightBox.innerHTML =
+          "<strong>Extremely close.</strong> At this x-value, the Taylor polynomial is almost indistinguishable from e<sup>x</sup>.";
+
+      } else if (
+        percentageErrorValue <
+        1
+      ) {
+
+        insightBox.classList.add(
+          "success"
+        );
+
+        insightBox.innerHTML =
+          "<strong>Very close.</strong> The approximation is within 1% of the true value.";
+
+      } else if (
+        percentageErrorValue <
+        5
+      ) {
+
+        insightBox.innerHTML =
+          "<strong>Getting close.</strong> Try adding another term and watch what happens to the error.";
+
+      } else {
+
+        insightBox.innerHTML =
+          "<strong>There is still visible approximation error.</strong> Add more terms, or move x closer to 0.";
+
+      }
+
+    }
+
+
+
+    /* ============================================================
+       MAIN UPDATE
+    ============================================================ */
+
+    function updateAll() {
+
+      terms =
+        Number(
+          termsSlider.value
+        );
+
+      selectedX =
+        Number(
+          xSlider.value
+        );
+
+
+      termsValue.textContent =
+        `${terms} ${
+          terms === 1
+            ? "term"
+            : "terms"
+        }`;
+
+
+      xValueLabel.textContent =
+        `x = ${selectedX.toFixed(2)}`;
+
+
+      formulaDisplay.innerHTML =
+        `T<sub>${terms - 1}</sub>(x) = ` +
+        buildFormula(terms);
+
+
+      const actual =
+        Math.exp(selectedX);
+
+      const estimate =
+        taylorExp(
+          selectedX,
+          terms
+        );
+
+      const absError =
+        Math.abs(
+          actual -
+          estimate
+        );
+
+      const pctError =
+        absError /
+        Math.abs(actual) *
+        100;
+
+
+      actualValue.textContent =
+        formatNumber(actual);
+
+      estimateValue.textContent =
+        formatNumber(estimate);
+
+      absoluteError.textContent =
+        formatNumber(absError);
+
+      percentageError.textContent =
+        `${pctError.toFixed(3)}%`;
+
+
+      updateInsight(
+        pctError
+      );
+
+
+      if (
+        terms >=
+        MAX_TERMS
+      ) {
+
+        addTermBtn.textContent =
+          "Maximum number of terms reached";
+
+        addTermBtn.disabled =
+          true;
+
+        addTermBtn.style.opacity =
+          "0.6";
+
+        addTermBtn.style.cursor =
+          "default";
+
+      } else {
+
+        addTermBtn.textContent =
+          `+ Add ${
+            nextTermLabel(
+              terms
+            )
+          }`;
+
+        addTermBtn.disabled =
+          false;
+
+        addTermBtn.style.opacity =
+          "1";
+
+        addTermBtn.style.cursor =
+          "pointer";
+
+      }
+
+
+      drawMainGraph();
+
+      drawErrorGraph();
+
+      updateTable();
+
+    }
+
+
+
+    /* ============================================================
+       NEXT TERM LABEL
+    ============================================================ */
+
+    function nextTermLabel(
+      currentTerms
+    ) {
+
+      const n =
+        currentTerms;
+
+
+      if (n === 1) {
+
+        return "x";
+
+      }
+
+
+      return (
+        `x${superscript(n)}/${n}!`
+      );
+
+    }
+
+
+
+    /* ============================================================
+       EVENT LISTENERS
+    ============================================================ */
+
+    termsSlider.addEventListener(
+      "input",
+      updateAll
+    );
+
+
+    xSlider.addEventListener(
+      "input",
+      updateAll
+    );
+
+
+    addTermBtn.addEventListener(
+      "click",
+      () => {
+
+        if (
+          Number(
+            termsSlider.value
+          ) <
+          MAX_TERMS
+        ) {
+
+          termsSlider.value =
+            Number(
+              termsSlider.value
+            ) + 1;
+
+          updateAll();
+
+        }
+
+      }
+    );
+
+
+    resetBtn.addEventListener(
+      "click",
+      () => {
+
+        termsSlider.value =
+          3;
+
+        xSlider.value =
+          1.5;
+
+        showError.checked =
+          false;
+
+        showTable.checked =
+          false;
+
+        showGuideCheckbox.checked =
+          true;
+
+        showGuide =
+          true;
+
+        errorSection.style.display =
+          "none";
+
+        tableSection.style.display =
+          "none";
+
+        updateAll();
+
+      }
+    );
+
+
+    showError.addEventListener(
+      "change",
+      () => {
+
+        errorSection.style.display =
+          showError.checked
+            ? "block"
+            : "none";
+
+        updateAll();
+
+      }
+    );
+
+
+    showTable.addEventListener(
+      "change",
+      () => {
+
+        tableSection.style.display =
+          showTable.checked
+            ? "block"
+            : "none";
+
+        updateTable();
+
+      }
+    );
+
+
+    showGuideCheckbox.addEventListener(
+      "change",
+      () => {
+
+        showGuide =
+          showGuideCheckbox.checked;
+
+        drawMainGraph();
+
+      }
+    );
+
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        drawMainGraph();
+
+        drawErrorGraph();
+
+      }
+    );
+
+
+
+    /* ============================================================
+       INITIALISE
+    ============================================================ */
+
+    updateAll();
+
   </script>
 
 </body>
