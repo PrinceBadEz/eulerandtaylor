@@ -24,9 +24,9 @@
       --taylor-line: #d81b60;
       --error-line: #8c4a78;
 
-      --success: #16845b;
       --success-bg: #eefaf5;
       --success-border: #9bd7bf;
+      --success-text: #145b41;
 
       --warning-bg: #fff7e8;
       --warning-border: #f1ca7c;
@@ -216,15 +216,11 @@
       margin-bottom: 27px;
     }
 
-    .control-block:last-child {
-      margin-bottom: 0;
-    }
-
     .control-title {
       display: flex;
       justify-content: space-between;
-      gap: 15px;
       align-items: baseline;
+      gap: 12px;
       margin-bottom: 10px;
     }
 
@@ -250,7 +246,7 @@
     select {
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 10px 12px;
+      padding: 11px 12px;
       background: white;
       color: var(--navy);
       font-weight: 700;
@@ -275,10 +271,7 @@
       font-family: inherit;
       cursor: pointer;
       border-radius: 8px;
-      transition:
-        transform 0.12s ease,
-        box-shadow 0.12s ease,
-        background 0.12s ease;
+      transition: 0.12s ease;
     }
 
     button:hover {
@@ -292,7 +285,6 @@
       font-weight: 700;
       font-size: 15px;
       padding: 12px 16px;
-      box-shadow: 0 5px 13px rgba(216, 27, 96, 0.2);
     }
 
     .primary-btn:hover {
@@ -305,11 +297,6 @@
       color: var(--navy);
       padding: 8px 13px;
       font-weight: 700;
-    }
-
-    .secondary-btn:hover {
-      border-color: var(--asb-pink);
-      color: var(--asb-pink);
     }
 
     .formula-card {
@@ -338,6 +325,11 @@
       padding-bottom: 3px;
     }
 
+    .formula-divider {
+      border-top: 1px solid var(--border);
+      margin: 16px 0;
+    }
+
     .derivative-box {
       margin-top: 12px;
       border-top: 1px solid var(--border);
@@ -360,6 +352,11 @@
       background: #fafbfc;
     }
 
+    .metric.highlight {
+      background: var(--asb-pink-light);
+      border-color: #f3b6cb;
+    }
+
     .metric-name {
       color: var(--muted);
       font-size: 12px;
@@ -371,11 +368,6 @@
       font-weight: 700;
       font-size: 18px;
       font-variant-numeric: tabular-nums;
-    }
-
-    .metric.highlight {
-      border-color: #f3b6cb;
-      background: var(--asb-pink-light);
     }
 
     .metric.highlight .metric-value {
@@ -395,7 +387,7 @@
     .insight.success {
       background: var(--success-bg);
       border-color: var(--success-border);
-      color: #145b41;
+      color: var(--success-text);
     }
 
     .options {
@@ -410,13 +402,10 @@
       gap: 9px;
       margin-bottom: 11px;
       font-size: 14px;
-      color: var(--text);
     }
 
     .option-row input {
       accent-color: var(--asb-pink);
-      width: 17px;
-      height: 17px;
     }
 
     #errorSection,
@@ -427,11 +416,6 @@
 
     .small-graph-wrap {
       height: 260px;
-    }
-
-    .table-responsive {
-      width: 100%;
-      overflow-x: auto;
     }
 
     table {
@@ -456,7 +440,6 @@
       padding: 10px 12px;
       border-bottom: 1px solid var(--border);
       text-align: right;
-      font-variant-numeric: tabular-nums;
     }
 
     td:first-child {
@@ -470,6 +453,10 @@
 
     tbody tr.active-row {
       background: var(--asb-pink-light);
+    }
+
+    .table-responsive {
+      overflow-x: auto;
     }
 
     .learning-block {
@@ -504,40 +491,12 @@
         grid-template-columns: 1fr;
       }
 
-      .header-inner {
-        align-items: flex-start;
-      }
-
       .course-label {
         display: none;
       }
 
       .graph-wrap {
         height: 390px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      main {
-        padding-left: 15px;
-        padding-right: 15px;
-      }
-
-      .header-inner {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      .metric-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .graph-wrap {
-        height: 330px;
-      }
-
-      .card-body {
-        padding: 16px;
       }
     }
   </style>
@@ -555,8 +514,8 @@
         <h1>Taylor Series Explorer</h1>
 
         <p class="subtitle">
-          See how Taylor polynomials approximate different functions —
-          and discover when the approximation can become exact.
+          Explore how Taylor polynomials approximate different functions —
+          and discover when the approximation becomes exact.
         </p>
       </div>
 
@@ -567,7 +526,6 @@
     </div>
   </header>
 
-
   <main>
 
     <section class="intro-card">
@@ -575,11 +533,8 @@
         What happens when we keep adding Taylor terms?
       </div>
 
-      <p id="introText">
-        Start with eˣ and watch its Taylor polynomial improve one term at a time.
-      </p>
+      <p id="introText"></p>
     </section>
-
 
     <div class="layout">
 
@@ -588,9 +543,7 @@
         <div class="card">
 
           <div class="card-header">
-            <h2 id="graphTitle">
-              eˣ and its Taylor approximation
-            </h2>
+            <h2 id="graphTitle"></h2>
 
             <button class="secondary-btn" id="resetBtn">
               Reset
@@ -631,10 +584,6 @@
           </div>
 
           <div class="card-body">
-            <div class="legend" style="margin-bottom:8px;">
-              Error = true function − Taylor approximation
-            </div>
-
             <div class="small-graph-wrap">
               <canvas id="errorCanvas"></canvas>
             </div>
@@ -684,6 +633,7 @@
 
           <div class="card-body">
 
+
             <div class="control-block">
               <div class="control-title">
                 <label for="functionSelect">
@@ -699,6 +649,14 @@
 
 
             <div class="formula-card">
+
+              <div class="formula-label">
+                Selected function
+              </div>
+
+              <div class="formula" id="selectedFunctionDisplay"></div>
+
+              <div class="formula-divider"></div>
 
               <div class="formula-label">
                 Current Taylor polynomial
@@ -718,9 +676,7 @@
                   Number of terms
                 </label>
 
-                <span class="control-value" id="termsValue">
-                  3 terms
-                </span>
+                <span class="control-value" id="termsValue"></span>
               </div>
 
               <input
@@ -740,9 +696,9 @@
             </div>
 
 
-            <div class="control-block" style="margin-top:-8px;">
+            <div class="control-block">
               <button class="primary-btn" id="addTermBtn">
-                + Add the next term
+                + Add next term
               </button>
             </div>
 
@@ -754,9 +710,7 @@
                   Choose x
                 </label>
 
-                <span class="control-value" id="xValueLabel">
-                  x = 1.50
-                </span>
+                <span class="control-value" id="xValueLabel"></span>
               </div>
 
               <input
@@ -780,30 +734,22 @@
             <div class="metric-grid">
 
               <div class="metric">
-                <div class="metric-name">
-                  True function value
-                </div>
+                <div class="metric-name">True value</div>
                 <div class="metric-value" id="actualValue"></div>
               </div>
 
               <div class="metric highlight">
-                <div class="metric-name">
-                  Taylor estimate
-                </div>
+                <div class="metric-name">Taylor estimate</div>
                 <div class="metric-value" id="estimateValue"></div>
               </div>
 
               <div class="metric">
-                <div class="metric-name">
-                  Absolute error
-                </div>
+                <div class="metric-name">Absolute error</div>
                 <div class="metric-value" id="absoluteError"></div>
               </div>
 
               <div class="metric">
-                <div class="metric-name">
-                  Percentage error
-                </div>
+                <div class="metric-name">Percentage error</div>
                 <div class="metric-value" id="percentageError"></div>
               </div>
 
@@ -817,23 +763,17 @@
 
               <div class="option-row">
                 <input type="checkbox" id="showError" />
-                <label for="showError">
-                  Show error graph
-                </label>
+                <label for="showError">Show error graph</label>
               </div>
 
               <div class="option-row">
                 <input type="checkbox" id="showTable" />
-                <label for="showTable">
-                  Show approximation table
-                </label>
+                <label for="showTable">Show approximation table</label>
               </div>
 
               <div class="option-row">
                 <input type="checkbox" id="showGuide" checked />
-                <label for="showGuide">
-                  Highlight expansion point x = 0
-                </label>
+                <label for="showGuide">Highlight expansion point x = 0</label>
               </div>
 
             </div>
@@ -848,16 +788,8 @@
 
 
     <section class="learning-block">
-
-      <h3 id="learningTitle">
-        What do you notice?
-      </h3>
-
-      <p id="learningText">
-        Try keeping the number of terms fixed while moving x farther from zero.
-        Then add more terms. Where is the approximation most accurate?
-      </p>
-
+      <h3 id="learningTitle"></h3>
+      <p id="learningText"></p>
     </section>
 
   </main>
@@ -876,10 +808,9 @@
     let showGuide = true;
 
 
-    const FUNCTION_CONFIG = {
+    const FUNCTIONS = {
 
       exp: {
-        name: "eˣ",
         maxTerms: 12,
         xMin: -3,
         xMax: 3,
@@ -888,10 +819,10 @@
 
         trueFunction: x => Math.exp(x),
 
-        taylorFunction: (x, numberOfTerms) => {
+        taylorFunction: (x, nTerms) => {
           let sum = 0;
 
-          for (let n = 0; n < numberOfTerms; n++) {
+          for (let n = 0; n < nTerms; n++) {
             sum += Math.pow(x, n) / factorial(n);
           }
 
@@ -899,9 +830,7 @@
         }
       },
 
-
       cubic: {
-        name: "x³ + 5x² − 4",
         maxTerms: 4,
         xMin: -3,
         xMax: 3,
@@ -909,29 +838,27 @@
         yMax: 70,
 
         trueFunction: x =>
-          Math.pow(x, 3) +
-          5 * Math.pow(x, 2) -
-          4,
+          Math.pow(x, 3)
+          + 5 * Math.pow(x, 2)
+          - 4,
 
-        taylorFunction: (x, numberOfTerms) => {
+        taylorFunction: (x, nTerms) => {
 
-          if (numberOfTerms === 1) {
+          if (nTerms === 1) {
             return -4;
           }
 
-          if (numberOfTerms === 2) {
+          if (nTerms === 2) {
             return -4;
           }
 
-          if (numberOfTerms === 3) {
+          if (nTerms === 3) {
             return -4 + 5 * Math.pow(x, 2);
           }
 
-          return (
-            -4 +
-            5 * Math.pow(x, 2) +
-            Math.pow(x, 3)
-          );
+          return -4
+            + 5 * Math.pow(x, 2)
+            + Math.pow(x, 3);
         }
       }
 
@@ -940,6 +867,9 @@
 
     const functionSelect =
       document.getElementById("functionSelect");
+
+    const selectedFunctionDisplay =
+      document.getElementById("selectedFunctionDisplay");
 
     const termsSlider =
       document.getElementById("termsSlider");
@@ -1020,9 +950,7 @@
       document.getElementById("learningText");
 
 
-
     function factorial(n) {
-
       let result = 1;
 
       for (let i = 2; i <= n; i++) {
@@ -1033,9 +961,7 @@
     }
 
 
-
     function superscript(n) {
-
       const map = {
         "0": "⁰",
         "1": "¹",
@@ -1056,42 +982,39 @@
     }
 
 
+    function buildFormula(nTerms) {
 
-    function buildExpFormula(numberOfTerms) {
+      if (selectedFunction === "exp") {
 
-      const pieces = [];
+        const pieces = [];
 
-      for (let n = 0; n < numberOfTerms; n++) {
+        for (let n = 0; n < nTerms; n++) {
 
-        if (n === 0) {
-          pieces.push("1");
+          if (n === 0) {
+            pieces.push("1");
 
-        } else if (n === 1) {
-          pieces.push("x");
+          } else if (n === 1) {
+            pieces.push("x");
 
-        } else {
-          pieces.push(
-            `x${superscript(n)}/${n}!`
-          );
+          } else {
+            pieces.push(`x${superscript(n)}/${n}!`);
+          }
+
         }
+
+        return pieces.join(" + ");
       }
 
-      return pieces.join(" + ");
-    }
 
-
-
-    function buildCubicFormula(numberOfTerms) {
-
-      if (numberOfTerms === 1) {
+      if (nTerms === 1) {
         return "−4";
       }
 
-      if (numberOfTerms === 2) {
+      if (nTerms === 2) {
         return "−4 + 0x";
       }
 
-      if (numberOfTerms === 3) {
+      if (nTerms === 3) {
         return "−4 + 0x + 5x²";
       }
 
@@ -1099,29 +1022,15 @@
     }
 
 
-
-    function buildFormula(numberOfTerms) {
-
-      if (selectedFunction === "exp") {
-        return buildExpFormula(numberOfTerms);
-      }
-
-      return buildCubicFormula(numberOfTerms);
-    }
-
-
-
     function nextTermLabel(currentTerms) {
 
       if (selectedFunction === "exp") {
 
-        const n = currentTerms;
-
-        if (n === 1) {
+        if (currentTerms === 1) {
           return "x";
         }
 
-        return `x${superscript(n)}/${n}!`;
+        return `x${superscript(currentTerms)}/${currentTerms}!`;
       }
 
 
@@ -1141,29 +1050,68 @@
     }
 
 
-
-    function updateDerivativeExplanation() {
+    function updateTextContent() {
 
       if (selectedFunction === "exp") {
 
+        selectedFunctionDisplay.innerHTML =
+          "f(x) = e<sup>x</sup>";
+
+        graphTitle.innerHTML =
+          "e<sup>x</sup> and its Taylor approximation";
+
+        introText.innerHTML =
+          "Start with a few terms and watch the Taylor polynomial move closer to e<sup>x</sup>.";
+
         derivativeBox.innerHTML = `
-          Expansion point: <strong>x = 0</strong><br>
-          For e<sup>x</sup>, every derivative is also e<sup>x</sup>,
-          so at x = 0 each derivative equals 1.
+          Expansion point: <strong>x = 0</strong><br><br>
+          For f(x) = e<sup>x</sup>, every derivative is also e<sup>x</sup>.<br>
+          Therefore:<br>
+          f(0) = 1<br>
+          f′(0) = 1<br>
+          f″(0) = 1<br>
+          f‴(0) = 1<br>
+          and so on.
         `;
+
+        learningTitle.textContent =
+          "What do you notice about eˣ?";
+
+        learningText.innerHTML =
+          "Keep the number of terms fixed and move x farther from 0. Then add more terms. The approximation improves, but the series continues indefinitely.";
 
       } else {
 
+        selectedFunctionDisplay.innerHTML =
+          "f(x) = x³ + 5x² − 4";
+
+        graphTitle.innerHTML =
+          "x³ + 5x² − 4 and its Taylor approximation";
+
+        introText.innerHTML =
+          "Add the Taylor terms one at a time. Can you predict when the Taylor polynomial will become exactly equal to the original function?";
+
         derivativeBox.innerHTML = `
-          <strong>Where do the terms come from?</strong><br>
+          Expansion point: <strong>x = 0</strong><br><br>
+          f(x) = x³ + 5x² − 4<br>
           f(0) = −4<br>
-          f′(0) = 0<br>
-          f″(0) / 2! = 10 / 2 = 5<br>
-          f‴(0) / 3! = 6 / 6 = 1
+          f′(x) = 3x² + 10x → f′(0) = 0<br>
+          f″(x) = 6x + 10 → f″(0) = 10<br>
+          f‴(x) = 6 → f‴(0) = 6<br><br>
+          Therefore:<br>
+          f(0) = −4<br>
+          f′(0)x = 0x<br>
+          f″(0)x²/2! = 5x²<br>
+          f‴(0)x³/3! = x³
         `;
+
+        learningTitle.textContent =
+          "Why does the cubic become exact?";
+
+        learningText.innerHTML =
+          "The function is already a third-degree polynomial. Once the Taylor polynomial includes all terms up to x³, it is identical to the original function. All fourth and higher derivatives are zero.";
       }
     }
-
 
 
     function setupCanvas(canvas) {
@@ -1200,36 +1148,24 @@
     }
 
 
-
-    function cssColor(variableName) {
-
+    function cssColor(name) {
       return getComputedStyle(
         document.documentElement
       )
-        .getPropertyValue(variableName)
+        .getPropertyValue(name)
         .trim();
     }
-
 
 
     function drawMainGraph() {
 
       const config =
-        FUNCTION_CONFIG[selectedFunction];
+        FUNCTIONS[selectedFunction];
 
-      const {
-        ctx,
-        width,
-        height
-      } = setupCanvas(mainCanvas);
+      const { ctx, width, height } =
+        setupCanvas(mainCanvas);
 
-
-      ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-      );
+      ctx.clearRect(0, 0, width, height);
 
 
       const margin = {
@@ -1240,42 +1176,23 @@
       };
 
 
-      const {
-        xMin,
-        xMax,
-        yMin,
-        yMax
-      } = config;
+      const xMin = config.xMin;
+      const xMax = config.xMax;
+      const yMin = config.yMin;
+      const yMax = config.yMax;
 
 
       function px(x) {
-
-        return (
-          margin.left +
-          ((x - xMin) /
-            (xMax - xMin)) *
-          (
-            width -
-            margin.left -
-            margin.right
-          )
-        );
+        return margin.left +
+          ((x - xMin) / (xMax - xMin)) *
+          (width - margin.left - margin.right);
       }
 
 
       function py(y) {
-
-        return (
-          height -
-          margin.bottom -
-          ((y - yMin) /
-            (yMax - yMin)) *
-          (
-            height -
-            margin.top -
-            margin.bottom
-          )
-        );
+        return height - margin.bottom -
+          ((y - yMin) / (yMax - yMin)) *
+          (height - margin.top - margin.bottom);
       }
 
 
@@ -1286,27 +1203,14 @@
       for (let x = xMin; x <= xMax; x++) {
 
         ctx.beginPath();
-
         ctx.strokeStyle =
-          x === 0
-            ? "#aab0b8"
-            : "#eceef1";
+          x === 0 ? "#aab0b8" : "#eceef1";
 
-        ctx.moveTo(
-          px(x),
-          margin.top
-        );
-
-        ctx.lineTo(
-          px(x),
-          height - margin.bottom
-        );
-
+        ctx.moveTo(px(x), margin.top);
+        ctx.lineTo(px(x), height - margin.bottom);
         ctx.stroke();
 
-
         ctx.textAlign = "center";
-
         ctx.fillText(
           x,
           px(x),
@@ -1315,16 +1219,11 @@
       }
 
 
-
       const yStep =
-        selectedFunction === "exp"
-          ? 5
-          : 10;
-
+        selectedFunction === "exp" ? 5 : 10;
 
       const firstY =
-        Math.ceil(yMin / yStep) *
-        yStep;
+        Math.ceil(yMin / yStep) * yStep;
 
 
       for (
@@ -1334,34 +1233,20 @@
       ) {
 
         ctx.beginPath();
-
         ctx.strokeStyle =
-          y === 0
-            ? "#aab0b8"
-            : "#eceef1";
+          y === 0 ? "#aab0b8" : "#eceef1";
 
-        ctx.moveTo(
-          margin.left,
-          py(y)
-        );
-
-        ctx.lineTo(
-          width - margin.right,
-          py(y)
-        );
-
+        ctx.moveTo(margin.left, py(y));
+        ctx.lineTo(width - margin.right, py(y));
         ctx.stroke();
 
-
         ctx.textAlign = "right";
-
         ctx.fillText(
           y,
           margin.left - 8,
           py(y) + 4
         );
       }
-
 
 
       if (showGuide) {
@@ -1373,89 +1258,49 @@
 
         ctx.globalAlpha = 0.35;
         ctx.lineWidth = 3;
-
         ctx.setLineDash([6, 6]);
 
         ctx.beginPath();
-
-        ctx.moveTo(
-          px(0),
-          margin.top
-        );
-
-        ctx.lineTo(
-          px(0),
-          height - margin.bottom
-        );
-
+        ctx.moveTo(px(0), margin.top);
+        ctx.lineTo(px(0), height - margin.bottom);
         ctx.stroke();
 
         ctx.restore();
       }
 
 
-
-      function drawFunction(
-        fn,
-        color,
-        lineWidth
-      ) {
+      function drawFunction(fn, color, lineWidth) {
 
         ctx.beginPath();
-
         ctx.strokeStyle = color;
         ctx.lineWidth = lineWidth;
-        ctx.lineJoin = "round";
 
         let started = false;
 
-        const steps = 900;
-
-        for (
-          let i = 0;
-          i <= steps;
-          i++
-        ) {
+        for (let i = 0; i <= 900; i++) {
 
           const x =
             xMin +
             (xMax - xMin) *
-            i /
-            steps;
+            i / 900;
 
-          const y =
-            fn(x);
-
-
-          if (
-            !Number.isFinite(y) ||
-            y < yMin - 100 ||
-            y > yMax + 100
-          ) {
-
-            started = false;
-            continue;
-          }
-
+          const y = fn(x);
 
           const cx = px(x);
           const cy = py(y);
 
 
           if (!started) {
-
             ctx.moveTo(cx, cy);
             started = true;
 
           } else {
-
             ctx.lineTo(cx, cy);
           }
         }
 
         ctx.stroke();
       }
-
 
 
       drawFunction(
@@ -1466,15 +1311,10 @@
 
 
       drawFunction(
-        x =>
-          config.taylorFunction(
-            x,
-            terms
-          ),
+        x => config.taylorFunction(x, terms),
         cssColor("--taylor-line"),
         3
       );
-
 
 
       const trueY =
@@ -1491,33 +1331,21 @@
 
       ctx.strokeStyle = "#bcc1c8";
       ctx.setLineDash([5, 5]);
-      ctx.lineWidth = 1.5;
 
       ctx.beginPath();
-
-      ctx.moveTo(
-        px(selectedX),
-        margin.top
-      );
-
+      ctx.moveTo(px(selectedX), margin.top);
       ctx.lineTo(
         px(selectedX),
         height - margin.bottom
       );
-
       ctx.stroke();
 
       ctx.restore();
 
 
-
-      if (
-        trueY >= yMin &&
-        trueY <= yMax
-      ) {
+      if (trueY >= yMin && trueY <= yMax) {
 
         ctx.beginPath();
-
         ctx.fillStyle =
           cssColor("--true-line");
 
@@ -1533,14 +1361,9 @@
       }
 
 
-
-      if (
-        approxY >= yMin &&
-        approxY <= yMax
-      ) {
+      if (approxY >= yMin && approxY <= yMax) {
 
         ctx.beginPath();
-
         ctx.fillStyle =
           cssColor("--asb-pink");
 
@@ -1554,39 +1377,7 @@
 
         ctx.fill();
       }
-
-
-
-      ctx.fillStyle = "#5f6670";
-      ctx.font = "bold 12px Arial";
-
-      ctx.textAlign = "right";
-
-      ctx.fillText(
-        "x",
-        width - margin.right,
-        height - 10
-      );
-
-
-      ctx.save();
-
-      ctx.translate(
-        15,
-        margin.top + 2
-      );
-
-      ctx.textAlign = "left";
-
-      ctx.fillText(
-        "y",
-        0,
-        0
-      );
-
-      ctx.restore();
     }
-
 
 
     function drawErrorGraph() {
@@ -1597,21 +1388,12 @@
 
 
       const config =
-        FUNCTION_CONFIG[selectedFunction];
+        FUNCTIONS[selectedFunction];
 
-      const {
-        ctx,
-        width,
-        height
-      } = setupCanvas(errorCanvas);
+      const { ctx, width, height } =
+        setupCanvas(errorCanvas);
 
-
-      ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-      );
+      ctx.clearRect(0, 0, width, height);
 
 
       const margin = {
@@ -1622,27 +1404,20 @@
       };
 
 
-      const {
-        xMin,
-        xMax
-      } = config;
+      const xMin = config.xMin;
+      const xMax = config.xMax;
 
 
-      const sampleErrors = [];
+      const errors = [];
 
-      for (
-        let i = 0;
-        i <= 500;
-        i++
-      ) {
+      for (let i = 0; i <= 500; i++) {
 
         const x =
           xMin +
           (xMax - xMin) *
-          i /
-          500;
+          i / 500;
 
-        sampleErrors.push(
+        errors.push(
           config.trueFunction(x) -
           config.taylorFunction(
             x,
@@ -1654,132 +1429,53 @@
 
       let maxAbsError =
         Math.max(
-          ...sampleErrors.map(
-            v => Math.abs(v)
+          ...errors.map(
+            value => Math.abs(value)
           ),
           0.1
         );
 
+      maxAbsError *= 1.1;
 
-      maxAbsError *= 1.12;
 
-
-      const yMin =
-        -maxAbsError;
-
-      const yMax =
-        maxAbsError;
+      const yMin = -maxAbsError;
+      const yMax = maxAbsError;
 
 
       function px(x) {
-
-        return (
-          margin.left +
-          ((x - xMin) /
-            (xMax - xMin)) *
-          (
-            width -
-            margin.left -
-            margin.right
-          )
-        );
+        return margin.left +
+          ((x - xMin) / (xMax - xMin)) *
+          (width - margin.left - margin.right);
       }
 
 
       function py(y) {
-
-        return (
-          height -
-          margin.bottom -
-          ((y - yMin) /
-            (yMax - yMin)) *
-          (
-            height -
-            margin.top -
-            margin.bottom
-          )
-        );
+        return height - margin.bottom -
+          ((y - yMin) / (yMax - yMin)) *
+          (height - margin.top - margin.bottom);
       }
-
 
 
       ctx.strokeStyle = "#aeb4bd";
-      ctx.lineWidth = 1.5;
-
       ctx.beginPath();
-
-      ctx.moveTo(
-        margin.left,
-        py(0)
-      );
-
-      ctx.lineTo(
-        width - margin.right,
-        py(0)
-      );
-
+      ctx.moveTo(margin.left, py(0));
+      ctx.lineTo(width - margin.right, py(0));
       ctx.stroke();
 
 
-
-      ctx.font = "11px Arial";
-      ctx.fillStyle = "#7a818b";
-
-
-      for (
-        let x = xMin;
-        x <= xMax;
-        x++
-      ) {
-
-        ctx.strokeStyle = "#eceef1";
-        ctx.lineWidth = 1;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-          px(x),
-          margin.top
-        );
-
-        ctx.lineTo(
-          px(x),
-          height - margin.bottom
-        );
-
-        ctx.stroke();
-
-
-        ctx.textAlign = "center";
-
-        ctx.fillText(
-          x,
-          px(x),
-          height - margin.bottom + 18
-        );
-      }
-
-
-
       ctx.beginPath();
-
       ctx.strokeStyle =
         cssColor("--error-line");
 
       ctx.lineWidth = 2.5;
 
 
-      for (
-        let i = 0;
-        i <= 500;
-        i++
-      ) {
+      for (let i = 0; i <= 500; i++) {
 
         const x =
           xMin +
           (xMax - xMin) *
-          i /
-          500;
+          i / 500;
 
         const error =
           config.trueFunction(x) -
@@ -1790,59 +1486,22 @@
 
 
         if (i === 0) {
-
-          ctx.moveTo(
-            px(x),
-            py(error)
-          );
-
+          ctx.moveTo(px(x), py(error));
         } else {
-
-          ctx.lineTo(
-            px(x),
-            py(error)
-          );
+          ctx.lineTo(px(x), py(error));
         }
       }
 
-
       ctx.stroke();
-
-
-
-      const selectedError =
-        config.trueFunction(selectedX) -
-        config.taylorFunction(
-          selectedX,
-          terms
-        );
-
-
-      ctx.beginPath();
-
-      ctx.fillStyle =
-        cssColor("--asb-pink");
-
-      ctx.arc(
-        px(selectedX),
-        py(selectedError),
-        5.5,
-        0,
-        Math.PI * 2
-      );
-
-      ctx.fill();
     }
-
 
 
     function updateTable() {
 
       tableBody.innerHTML = "";
 
-
       const config =
-        FUNCTION_CONFIG[selectedFunction];
+        FUNCTIONS[selectedFunction];
 
       const actual =
         config.trueFunction(selectedX);
@@ -1854,7 +1513,7 @@
         n++
       ) {
 
-        const approximation =
+        const estimate =
           config.taylorFunction(
             selectedX,
             n
@@ -1862,10 +1521,8 @@
 
         const error =
           Math.abs(
-            actual -
-            approximation
+            actual - estimate
           );
-
 
         const percentage =
           Math.abs(actual) > 1e-12
@@ -1880,33 +1537,19 @@
 
 
         if (n === terms) {
-          row.classList.add(
-            "active-row"
-          );
+          row.classList.add("active-row");
         }
 
 
         row.innerHTML = `
           <td>
-            ${n}
-            ${n === 1 ? "term" : "terms"}
+            ${n} ${n === 1 ? "term" : "terms"}
           </td>
 
-          <td>
-            ${formatNumber(approximation)}
-          </td>
-
-          <td>
-            ${formatNumber(actual)}
-          </td>
-
-          <td>
-            ${formatNumber(error)}
-          </td>
-
-          <td>
-            ${percentage.toFixed(3)}%
-          </td>
+          <td>${estimate.toFixed(5)}</td>
+          <td>${actual.toFixed(5)}</td>
+          <td>${error.toFixed(5)}</td>
+          <td>${percentage.toFixed(3)}%</td>
         `;
 
 
@@ -1915,153 +1558,81 @@
     }
 
 
+    function updateInsight(pctError, absError) {
 
-    function formatNumber(value) {
-
-      if (Math.abs(value) >= 10000) {
-        return value.toExponential(4);
-      }
-
-      return value.toFixed(5);
-    }
-
-
-
-    function updateInsight(
-      percentageErrorValue,
-      absoluteErrorValue
-    ) {
-
-      insightBox.classList.remove(
-        "success"
-      );
+      insightBox.classList.remove("success");
 
 
       if (
         selectedFunction === "cubic" &&
-        terms >= 4 &&
-        absoluteErrorValue < 1e-10
+        terms === 4
       ) {
 
-        insightBox.classList.add(
-          "success"
-        );
+        insightBox.classList.add("success");
 
         insightBox.innerHTML = `
-          <strong>Exact match!</strong>
-          The Taylor polynomial now reproduces
-          x³ + 5x² − 4 exactly.
-          All derivatives of order 4 and above are zero,
-          so no additional Taylor terms are needed.
+          <strong>Exact match!</strong><br>
+          The third-degree Taylor polynomial is exactly
+          x³ + 5x² − 4.
+          All derivatives of order 4 and above are zero.
         `;
 
         return;
       }
 
 
-      if (percentageErrorValue < 0.01) {
+      if (pctError < 0.01) {
 
-        insightBox.classList.add(
-          "success"
-        );
+        insightBox.classList.add("success");
 
         insightBox.innerHTML =
           "<strong>Extremely close.</strong> The Taylor polynomial is almost indistinguishable from the true function here.";
 
-      } else if (percentageErrorValue < 1) {
+      } else if (pctError < 1) {
 
-        insightBox.classList.add(
-          "success"
-        );
+        insightBox.classList.add("success");
 
         insightBox.innerHTML =
           "<strong>Very close.</strong> The approximation is within 1% of the true value.";
 
-      } else if (percentageErrorValue < 5) {
+      } else if (pctError < 5) {
 
         insightBox.innerHTML =
-          "<strong>Getting close.</strong> Try adding another term and watch what happens to the error.";
+          "<strong>Getting close.</strong> Add another term and observe how the error changes.";
 
       } else {
 
         insightBox.innerHTML =
-          "<strong>There is still visible approximation error.</strong> Add more terms, or move x closer to 0.";
+          "<strong>There is still visible approximation error.</strong> Add more terms or move x closer to 0.";
       }
     }
-
-
-
-    function updatePageText() {
-
-      if (selectedFunction === "exp") {
-
-        graphTitle.innerHTML =
-          "e<sup>x</sup> and its Taylor approximation";
-
-        introText.innerHTML =
-          "Start with a few terms and watch the Taylor polynomial move closer to e<sup>x</sup>.";
-
-        learningTitle.textContent =
-          "What do you notice about eˣ?";
-
-        learningText.innerHTML =
-          "Keep the number of terms fixed and move x farther from 0. Then add more terms. Notice that the approximation improves, but the series does not terminate.";
-
-      } else {
-
-        graphTitle.innerHTML =
-          "x³ + 5x² − 4 and its Taylor approximation";
-
-        introText.innerHTML =
-          "Add the Taylor terms one at a time. Can you predict when the approximation will become exact?";
-
-        learningTitle.textContent =
-          "Why does this one become exact?";
-
-        learningText.innerHTML =
-          "This function is already a cubic polynomial. Once the constant, linear, quadratic and cubic Taylor terms are included, the Taylor polynomial is the original function itself.";
-      }
-    }
-
 
 
     function updateAll() {
 
       const config =
-        FUNCTION_CONFIG[selectedFunction];
+        FUNCTIONS[selectedFunction];
 
 
       terms =
-        Number(
-          termsSlider.value
-        );
-
+        Number(termsSlider.value);
 
       selectedX =
-        Number(
-          xSlider.value
-        );
+        Number(xSlider.value);
 
 
       termsValue.textContent =
-        `${terms} ${
-          terms === 1
-            ? "term"
-            : "terms"
-        }`;
-
+        `${terms} ${terms === 1 ? "term" : "terms"}`;
 
       xValueLabel.textContent =
         `x = ${selectedX.toFixed(2)}`;
 
 
       formulaDisplay.innerHTML =
-        `T<sub>${terms - 1}</sub>(x) = ` +
-        buildFormula(terms);
+        `T<sub>${terms - 1}</sub>(x) = ${buildFormula(terms)}`;
 
 
-      updateDerivativeExplanation();
-      updatePageText();
+      updateTextContent();
 
 
       const actual =
@@ -2075,10 +1646,8 @@
 
       const absError =
         Math.abs(
-          actual -
-          estimate
+          actual - estimate
         );
-
 
       const pctError =
         Math.abs(actual) > 1e-12
@@ -2089,13 +1658,13 @@
 
 
       actualValue.textContent =
-        formatNumber(actual);
+        actual.toFixed(5);
 
       estimateValue.textContent =
-        formatNumber(estimate);
+        estimate.toFixed(5);
 
       absoluteError.textContent =
-        formatNumber(absError);
+        absError.toFixed(5);
 
       percentageError.textContent =
         `${pctError.toFixed(3)}%`;
@@ -2107,28 +1676,23 @@
       );
 
 
-      if (
-        terms >=
-        config.maxTerms
-      ) {
+      if (terms >= config.maxTerms) {
+
+        addTermBtn.disabled = true;
+        addTermBtn.style.opacity = "0.6";
 
         addTermBtn.textContent =
           selectedFunction === "cubic"
             ? "Exact polynomial reached"
             : "Maximum number of terms reached";
 
-        addTermBtn.disabled = true;
-        addTermBtn.style.opacity = "0.6";
-        addTermBtn.style.cursor = "default";
-
       } else {
-
-        addTermBtn.textContent =
-          `+ Add ${nextTermLabel(terms)}`;
 
         addTermBtn.disabled = false;
         addTermBtn.style.opacity = "1";
-        addTermBtn.style.cursor = "pointer";
+
+        addTermBtn.textContent =
+          `+ Add ${nextTermLabel(terms)}`;
       }
 
 
@@ -2138,11 +1702,10 @@
     }
 
 
-
-    function configureForSelectedFunction() {
+    function configureFunction() {
 
       const config =
-        FUNCTION_CONFIG[selectedFunction];
+        FUNCTIONS[selectedFunction];
 
 
       termsSlider.max =
@@ -2152,43 +1715,32 @@
         config.maxTerms;
 
 
-      if (
-        Number(
-          termsSlider.value
-        ) >
-        config.maxTerms
-      ) {
-
-        termsSlider.value =
-          config.maxTerms;
-      }
-
-
       if (selectedFunction === "exp") {
 
-        if (
-          Number(
-            termsSlider.value
-          ) < 1
-        ) {
-          termsSlider.value = 3;
-        }
+        termsSlider.value = 3;
+        xSlider.value = 1.5;
 
       } else {
 
-        if (
-          Number(
-            termsSlider.value
-          ) > 4
-        ) {
-          termsSlider.value = 3;
-        }
+        termsSlider.value = 1;
+        xSlider.value = 1.5;
       }
 
 
       updateAll();
     }
 
+
+    functionSelect.addEventListener(
+      "change",
+      () => {
+
+        selectedFunction =
+          functionSelect.value;
+
+        configureFunction();
+      }
+    );
 
 
     termsSlider.addEventListener(
@@ -2203,46 +1755,20 @@
     );
 
 
-    functionSelect.addEventListener(
-      "change",
-      () => {
-
-        selectedFunction =
-          functionSelect.value;
-
-        if (selectedFunction === "exp") {
-          termsSlider.value = 3;
-          xSlider.value = 1.5;
-
-        } else {
-          termsSlider.value = 2;
-          xSlider.value = 1.5;
-        }
-
-        configureForSelectedFunction();
-      }
-    );
-
-
     addTermBtn.addEventListener(
       "click",
       () => {
 
         const config =
-          FUNCTION_CONFIG[selectedFunction];
-
+          FUNCTIONS[selectedFunction];
 
         if (
-          Number(
-            termsSlider.value
-          ) <
+          Number(termsSlider.value) <
           config.maxTerms
         ) {
 
           termsSlider.value =
-            Number(
-              termsSlider.value
-            ) + 1;
+            Number(termsSlider.value) + 1;
 
           updateAll();
         }
@@ -2252,29 +1778,7 @@
 
     resetBtn.addEventListener(
       "click",
-      () => {
-
-        if (selectedFunction === "exp") {
-          termsSlider.value = 3;
-          xSlider.value = 1.5;
-
-        } else {
-          termsSlider.value = 2;
-          xSlider.value = 1.5;
-        }
-
-
-        showError.checked = false;
-        showTable.checked = false;
-        showGuideCheckbox.checked = true;
-
-        showGuide = true;
-
-        errorSection.style.display = "none";
-        tableSection.style.display = "none";
-
-        updateAll();
-      }
+      configureFunction
     );
 
 
@@ -2328,7 +1832,7 @@
     );
 
 
-    configureForSelectedFunction();
+    configureFunction();
 
   </script>
 
