@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Taylor Series Explorer (made with ChatGPT) | Asia School of Business | Prompted by Izzy</title>
+  <title>Taylor Series Explorer (made with ChatGPT by Izzy)</title>
 
   <style>
     :root {
@@ -22,7 +22,7 @@
 
       --true-line: #182333;
       --taylor-line: #d81b60;
-      --selected-line: #8c929b;
+      --error-line: #8c4a78;
 
       --success-bg: #eefaf5;
       --success-border: #9bd7bf;
@@ -31,7 +31,12 @@
       --warning-bg: #fff7e8;
       --warning-border: #f1ca7c;
 
-      --shadow: 0 8px 24px rgba(20, 30, 45, 0.07);
+      --danger-bg: #fff1f2;
+      --danger-border: #f1b6be;
+      --danger-text: #8d2634;
+
+      --shadow:
+        0 8px 24px rgba(20, 30, 45, 0.07);
     }
 
     * {
@@ -40,599 +45,1382 @@
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       background: var(--background);
+
       color: var(--text);
+
       line-height: 1.5;
     }
 
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
     .top-band {
       height: 8px;
-      background: var(--asb-pink);
+
+      background:
+        var(--asb-pink);
     }
 
+
     header {
-      background: white;
-      border-bottom: 1px solid var(--border);
+      background:
+        white;
+
+      border-bottom:
+        1px solid var(--border);
     }
+
 
     .header-inner {
       max-width: 1220px;
-      margin: 0 auto;
-      padding: 24px 28px 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 30px;
+
+      margin:
+        0 auto;
+
+      padding:
+        24px 28px 22px;
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        flex-end;
+
+      gap:
+        30px;
     }
+
 
     .brand {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--asb-pink);
-      text-transform: uppercase;
-      margin-bottom: 5px;
+      font-size:
+        13px;
+
+      font-weight:
+        700;
+
+      letter-spacing:
+        0.08em;
+
+      color:
+        var(--asb-pink);
+
+      text-transform:
+        uppercase;
+
+      margin-bottom:
+        5px;
     }
+
 
     h1 {
-      margin: 0;
-      color: var(--navy);
-      font-size: clamp(28px, 4vw, 43px);
-      line-height: 1.05;
-      letter-spacing: -0.035em;
+      margin:
+        0;
+
+      color:
+        var(--navy);
+
+      font-size:
+        clamp(
+          27px,
+          4vw,
+          42px
+        );
+
+      line-height:
+        1.08;
+
+      letter-spacing:
+        -0.035em;
     }
+
 
     .subtitle {
-      margin: 9px 0 0;
-      color: var(--muted);
-      font-size: 16px;
-      max-width: 720px;
+      margin:
+        9px 0 0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        16px;
+
+      max-width:
+        760px;
     }
+
 
     .course-label {
-      color: var(--muted);
-      text-align: right;
-      white-space: nowrap;
-      font-size: 13px;
+      color:
+        var(--muted);
+
+      text-align:
+        right;
+
+      white-space:
+        nowrap;
+
+      font-size:
+        13px;
     }
+
 
     .course-label strong {
-      color: var(--navy);
-      display: block;
-      font-size: 14px;
+      color:
+        var(--navy);
+
+      display:
+        block;
+
+      font-size:
+        14px;
     }
+
+
+
+    /* =========================================================
+       MAIN LAYOUT
+    ========================================================= */
 
     main {
-      max-width: 1220px;
-      margin: 0 auto;
-      padding: 30px 28px 55px;
+      max-width:
+        1220px;
+
+      margin:
+        0 auto;
+
+      padding:
+        30px 28px 55px;
     }
+
 
     .intro-card {
-      background: var(--navy);
-      color: white;
-      padding: 23px 26px;
-      border-radius: 13px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow);
+      background:
+        var(--navy);
+
+      color:
+        white;
+
+      padding:
+        23px 26px;
+
+      border-radius:
+        13px;
+
+      margin-bottom:
+        24px;
+
+      box-shadow:
+        var(--shadow);
     }
+
 
     .intro-card .question {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 7px;
+      font-size:
+        20px;
+
+      font-weight:
+        700;
+
+      margin-bottom:
+        7px;
     }
+
 
     .intro-card p {
-      margin: 0;
-      color: #e8edf4;
+      margin:
+        0;
+
+      color:
+        #e8edf4;
     }
+
 
     .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.75fr) minmax(320px, 0.85fr);
-      gap: 23px;
-      align-items: start;
+      display:
+        grid;
+
+      grid-template-columns:
+        minmax(0, 1.75fr)
+        minmax(310px, 0.85fr);
+
+      gap:
+        23px;
+
+      align-items:
+        start;
     }
+
+
+
+    /* =========================================================
+       CARDS
+    ========================================================= */
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      background:
+        var(--card);
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        13px;
+
+      box-shadow:
+        var(--shadow);
+
+      overflow:
+        hidden;
     }
 
-    .card-header {
-      padding: 17px 21px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+
+    .card + .card {
+      margin-top:
+        24px;
     }
+
+
+    .card-header {
+      padding:
+        17px 21px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      gap:
+        12px;
+    }
+
 
     .card-header h2,
     .card-header h3 {
-      margin: 0;
-      font-size: 18px;
-      color: var(--navy);
+      margin:
+        0;
+
+      font-size:
+        18px;
+
+      color:
+        var(--navy);
     }
+
 
     .card-body {
-      padding: 21px;
+      padding:
+        21px;
     }
+
+
+
+    /* =========================================================
+       GRAPH
+    ========================================================= */
 
     .graph-wrap {
-      width: 100%;
-      height: 470px;
-      position: relative;
+      width:
+        100%;
+
+      height:
+        470px;
+
+      position:
+        relative;
     }
+
 
     canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
+      width:
+        100%;
+
+      height:
+        100%;
+
+      display:
+        block;
     }
+
 
     .legend {
-      display: flex;
-      gap: 18px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
-      font-size: 13px;
-      color: var(--muted);
+      display:
+        flex;
+
+      gap:
+        18px;
+
+      flex-wrap:
+        wrap;
+
+      margin-bottom:
+        15px;
+
+      font-size:
+        13px;
+
+      color:
+        var(--muted);
     }
+
 
     .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
     }
+
 
     .legend-line {
-      width: 26px;
-      height: 4px;
-      border-radius: 4px;
+      width:
+        26px;
+
+      height:
+        4px;
+
+      border-radius:
+        4px;
     }
+
 
     .legend-true {
-      background: var(--true-line);
+      background:
+        var(--true-line);
     }
+
 
     .legend-taylor {
-      background: var(--taylor-line);
+      background:
+        var(--taylor-line);
     }
+
+
+    .legend-expansion,
+    .legend-selected {
+      width:
+        3px;
+
+      height:
+        17px;
+    }
+
 
     .legend-expansion {
-      width: 3px;
-      height: 17px;
-      background: var(--asb-pink);
+      background:
+        var(--asb-pink);
     }
+
 
     .legend-selected {
-      width: 3px;
-      height: 17px;
-      background: var(--selected-line);
+      background:
+        #8e959e;
     }
+
+
+
+    /* =========================================================
+       CONTROLS
+    ========================================================= */
 
     .control-block {
-      margin-bottom: 26px;
+      margin-bottom:
+        26px;
     }
+
 
     .control-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 10px;
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        baseline;
+
+      gap:
+        12px;
+
+      margin-bottom:
+        10px;
     }
+
 
     .control-title label {
-      font-weight: 700;
-      color: var(--navy);
+      font-weight:
+        700;
+
+      color:
+        var(--navy);
     }
+
 
     .control-value {
-      background: var(--asb-pink-light);
-      color: var(--asb-pink-dark);
-      padding: 4px 9px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 13px;
-      white-space: nowrap;
+      background:
+        var(--asb-pink-light);
+
+      color:
+        var(--asb-pink-dark);
+
+      padding:
+        4px 9px;
+
+      border-radius:
+        999px;
+
+      font-weight:
+        700;
+
+      font-size:
+        13px;
+
+      white-space:
+        nowrap;
     }
 
-    select,
+
+
+    /* =========================================================
+       LIVE FUNCTION INPUT
+    ========================================================= */
+
+    .function-input {
+      width:
+        100%;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        9px;
+
+      padding:
+        12px 13px;
+
+      background:
+        white;
+
+      color:
+        var(--navy);
+
+      font-family:
+        "Times New Roman",
+        serif;
+
+      font-size:
+        20px;
+
+      outline:
+        none;
+
+      transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+
+    .function-input:focus {
+      border-color:
+        var(--asb-pink);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(216, 27, 96, 0.10);
+    }
+
+
+    .input-help {
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      margin-top:
+        7px;
+    }
+
+
+    .function-status {
+      margin-top:
+        8px;
+
+      min-height:
+        18px;
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    .function-status.ok {
+      color:
+        #16845b;
+    }
+
+
+    .function-status.error {
+      color:
+        var(--danger-text);
+    }
+
+
+    .preset-row {
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        7px;
+
+      margin-top:
+        10px;
+    }
+
+
+    .preset-btn {
+      border:
+        1px solid var(--border);
+
+      background:
+        white;
+
+      color:
+        var(--navy);
+
+      border-radius:
+        999px;
+
+      padding:
+        6px 9px;
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+    }
+
+
+    .preset-btn:hover {
+      border-color:
+        var(--asb-pink);
+
+      color:
+        var(--asb-pink-dark);
+    }
+
+
+
+    /* =========================================================
+       SLIDERS
+    ========================================================= */
+
     input[type="range"] {
-      width: 100%;
+      width:
+        100%;
+
+      accent-color:
+        var(--asb-pink);
+
+      cursor:
+        pointer;
     }
 
-    select {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 11px 12px;
-      background: white;
-      color: var(--navy);
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    input[type="range"] {
-      accent-color: var(--asb-pink);
-      cursor: pointer;
-    }
 
     .range-labels {
-      display: flex;
-      justify-content: space-between;
-      color: #8a909a;
-      font-size: 12px;
-      margin-top: 4px;
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      color:
+        #8a909a;
+
+      font-size:
+        12px;
+
+      margin-top:
+        4px;
     }
+
+
+
+    /* =========================================================
+       BUTTONS
+    ========================================================= */
 
     button {
-      border: none;
-      font-family: inherit;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: 0.12s ease;
+      font-family:
+        inherit;
+
+      transition:
+        0.12s ease;
     }
 
-    button:hover:not(:disabled) {
-      transform: translateY(-1px);
+
+    .primary-btn,
+    .secondary-btn {
+      cursor:
+        pointer;
+
+      border-radius:
+        8px;
+
+      font-weight:
+        700;
     }
+
 
     .primary-btn {
-      width: 100%;
-      background: var(--asb-pink);
-      color: white;
-      font-weight: 700;
-      font-size: 15px;
-      padding: 12px 16px;
+      width:
+        100%;
+
+      border:
+        none;
+
+      background:
+        var(--asb-pink);
+
+      color:
+        white;
+
+      font-size:
+        15px;
+
+      padding:
+        12px 16px;
     }
+
 
     .primary-btn:hover:not(:disabled) {
-      background: var(--asb-pink-dark);
+      background:
+        var(--asb-pink-dark);
     }
+
+
+    .primary-btn:disabled {
+      opacity:
+        0.55;
+
+      cursor:
+        default;
+    }
+
 
     .secondary-btn {
-      background: white;
-      border: 1px solid var(--border);
-      color: var(--navy);
-      padding: 8px 13px;
-      font-weight: 700;
+      background:
+        white;
+
+      border:
+        1px solid var(--border);
+
+      color:
+        var(--navy);
+
+      padding:
+        8px 13px;
     }
+
+
+    .secondary-btn:hover {
+      border-color:
+        var(--asb-pink);
+
+      color:
+        var(--asb-pink);
+    }
+
+
+
+    /* =========================================================
+       FORMULA PANEL
+    ========================================================= */
 
     .formula-card {
-      border-left: 5px solid var(--asb-pink);
-      background: #fffafd;
-      padding: 18px 19px;
-      border-radius: 6px;
-      margin-bottom: 23px;
+      border-left:
+        5px solid var(--asb-pink);
+
+      background:
+        #fffafd;
+
+      padding:
+        18px 19px;
+
+      border-radius:
+        6px;
+
+      margin-bottom:
+        23px;
     }
+
 
     .formula-label {
-      color: var(--muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      text-transform:
+        uppercase;
+
+      font-weight:
+        700;
+
+      letter-spacing:
+        0.05em;
+
+      margin-bottom:
+        8px;
     }
+
 
     .formula {
-      color: var(--navy);
-      font-family: "Times New Roman", serif;
-      font-size: 21px;
-      overflow-x: auto;
-      white-space: nowrap;
-      padding-bottom: 3px;
+      color:
+        var(--navy);
+
+      font-family:
+        "Times New Roman",
+        serif;
+
+      font-size:
+        20px;
+
+      overflow-x:
+        auto;
+
+      white-space:
+        nowrap;
+
+      padding-bottom:
+        3px;
     }
+
 
     .formula-divider {
-      border-top: 1px solid var(--border);
-      margin: 16px 0;
+      border-top:
+        1px solid var(--border);
+
+      margin:
+        16px 0;
     }
+
 
     .derivative-box {
-      margin-top: 14px;
-      border-top: 1px solid var(--border);
-      padding-top: 13px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
+      margin-top:
+        14px;
+
+      border-top:
+        1px solid var(--border);
+
+      padding-top:
+        13px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.7;
+
+      max-height:
+        190px;
+
+      overflow:
+        auto;
     }
 
-    .exact-box {
-      display: none;
-      margin-top: 14px;
-      padding: 13px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--success-border);
-      background: var(--success-bg);
-      color: var(--success-text);
-      font-size: 13px;
-    }
 
-    .exact-formula {
-      font-family: "Times New Roman", serif;
-      font-size: 18px;
-      color: var(--navy);
-      margin-top: 6px;
-    }
+
+    /* =========================================================
+       METRICS
+    ========================================================= */
 
     .metric-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 11px;
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap:
+        11px;
     }
+
 
     .metric {
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 13px;
-      background: #fafbfc;
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        9px;
+
+      padding:
+        13px;
+
+      background:
+        #fafbfc;
     }
+
 
     .metric.highlight {
-      background: var(--asb-pink-light);
-      border-color: #f3b6cb;
+      background:
+        var(--asb-pink-light);
+
+      border-color:
+        #f3b6cb;
     }
+
 
     .metric-name {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 3px;
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      margin-bottom:
+        3px;
     }
+
 
     .metric-value {
-      color: var(--navy);
-      font-weight: 700;
-      font-size: 18px;
-      font-variant-numeric: tabular-nums;
+      color:
+        var(--navy);
+
+      font-weight:
+        700;
+
+      font-size:
+        18px;
+
+      font-variant-numeric:
+        tabular-nums;
     }
+
 
     .metric.highlight .metric-value {
-      color: var(--asb-pink-dark);
+      color:
+        var(--asb-pink-dark);
     }
+
+
+
+    /* =========================================================
+       FEEDBACK BOX
+    ========================================================= */
 
     .insight {
-      margin-top: 18px;
-      padding: 14px 15px;
-      border-radius: 8px;
-      background: var(--warning-bg);
-      border: 1px solid var(--warning-border);
-      color: #5f4a20;
-      font-size: 13px;
+      margin-top:
+        18px;
+
+      padding:
+        14px 15px;
+
+      border-radius:
+        8px;
+
+      background:
+        var(--warning-bg);
+
+      border:
+        1px solid var(--warning-border);
+
+      color:
+        #5f4a20;
+
+      font-size:
+        13px;
     }
+
 
     .insight.success {
-      background: var(--success-bg);
-      border-color: var(--success-border);
-      color: var(--success-text);
+      background:
+        var(--success-bg);
+
+      border-color:
+        var(--success-border);
+
+      color:
+        var(--success-text);
     }
+
+
+    .insight.error {
+      background:
+        var(--danger-bg);
+
+      border-color:
+        var(--danger-border);
+
+      color:
+        var(--danger-text);
+    }
+
+
+
+    /* =========================================================
+       OPTIONS
+    ========================================================= */
 
     .options {
-      border-top: 1px solid var(--border);
-      margin-top: 24px;
-      padding-top: 21px;
+      border-top:
+        1px solid var(--border);
+
+      margin-top:
+        24px;
+
+      padding-top:
+        21px;
     }
+
 
     .option-row {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin-bottom: 11px;
-      font-size: 14px;
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        9px;
+
+      margin-bottom:
+        11px;
+
+      font-size:
+        14px;
     }
 
+
     .option-row input {
-      accent-color: var(--asb-pink);
+      accent-color:
+        var(--asb-pink);
     }
+
+
+
+    /* =========================================================
+       EXTRA SECTIONS
+    ========================================================= */
 
     #errorSection,
     #tableSection {
-      display: none;
-      margin-top: 24px;
+      display:
+        none;
     }
+
 
     .small-graph-wrap {
-      height: 260px;
+      height:
+        260px;
     }
+
 
     .table-responsive {
-      overflow-x: auto;
+      overflow-x:
+        auto;
     }
+
 
     table {
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 650px;
-      font-size: 14px;
+      border-collapse:
+        collapse;
+
+      width:
+        100%;
+
+      min-width:
+        650px;
+
+      font-size:
+        14px;
     }
+
 
     th {
-      background: var(--navy);
-      color: white;
-      text-align: right;
-      padding: 11px 12px;
+      background:
+        var(--navy);
+
+      color:
+        white;
+
+      text-align:
+        right;
+
+      padding:
+        11px 12px;
     }
+
 
     th:first-child {
-      text-align: left;
+      text-align:
+        left;
     }
+
 
     td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-      text-align: right;
-      font-variant-numeric: tabular-nums;
+      padding:
+        10px 12px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      text-align:
+        right;
+
+      font-variant-numeric:
+        tabular-nums;
     }
+
 
     td:first-child {
-      text-align: left;
-      font-weight: 600;
+      text-align:
+        left;
+
+      font-weight:
+        600;
     }
+
 
     tbody tr:nth-child(even) {
-      background: #fafbfc;
+      background:
+        #fafbfc;
     }
+
 
     tbody tr.active-row {
-      background: var(--asb-pink-light);
+      background:
+        var(--asb-pink-light);
     }
+
+
+
+    /* =========================================================
+       LEARNING BLOCK
+    ========================================================= */
 
     .learning-block {
-      margin-top: 24px;
-      padding: 23px 25px;
-      background: white;
-      border-top: 5px solid var(--asb-pink);
-      border-radius: 11px;
-      box-shadow: var(--shadow);
+      margin-top:
+        24px;
+
+      padding:
+        23px 25px;
+
+      background:
+        white;
+
+      border-top:
+        5px solid var(--asb-pink);
+
+      border-radius:
+        11px;
+
+      box-shadow:
+        var(--shadow);
     }
+
 
     .learning-block h3 {
-      margin: 0 0 8px;
-      color: var(--navy);
+      margin:
+        0 0 8px;
+
+      color:
+        var(--navy);
     }
+
 
     .learning-block p {
-      margin: 0;
-      color: var(--muted);
+      margin:
+        0;
+
+      color:
+        var(--muted);
     }
+
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
 
     footer {
-      border-top: 1px solid var(--border);
-      color: #888f99;
-      text-align: center;
-      font-size: 12px;
-      padding: 22px 20px 35px;
+      border-top:
+        1px solid var(--border);
+
+      color:
+        #888f99;
+
+      text-align:
+        center;
+
+      font-size:
+        12px;
+
+      padding:
+        22px 20px 35px;
     }
 
+
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
     @media (max-width: 900px) {
+
       .layout {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
 
       .course-label {
-        display: none;
+        display:
+          none;
       }
 
       .graph-wrap {
-        height: 390px;
+        height:
+          390px;
       }
     }
 
+
     @media (max-width: 560px) {
+
       main {
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left:
+          15px;
+
+        padding-right:
+          15px;
       }
+
 
       .header-inner {
-        padding-left: 18px;
-        padding-right: 18px;
+        padding-left:
+          18px;
+
+        padding-right:
+          18px;
       }
+
 
       .metric-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
 
+
       .graph-wrap {
-        height: 330px;
+        height:
+          330px;
+      }
+
+
+      .card-body {
+        padding:
+          16px;
       }
     }
   </style>
 </head>
 
+
 <body>
 
   <div class="top-band"></div>
 
+
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+
   <header>
+
     <div class="header-inner">
 
       <div>
-        <div class="brand">Asia School of Business</div>
 
-        <h1>Taylor Series Explorer (made with ChatGPT by Izzy)</h1>
+        <div class="brand">
+          Asia School of Business
+        </div>
+
+        <h1>
+          Taylor Series Explorer (made with ChatGPT by Izzy)
+        </h1>
 
         <p class="subtitle">
-          Change the expansion point and see how the Taylor polynomial
-          rebuilds the function around a different centre.
+          Enter a function, choose an expansion point,
+          and see how its Taylor polynomial changes.
         </p>
+
       </div>
 
+
       <div class="course-label">
-        <strong>Interactive Learning Activity</strong>
-        Quantitative Methods
+
+        <strong>
+          Interactive Learning Activity
+        </strong>
+
+        Taylor Series
+
       </div>
 
     </div>
+
   </header>
 
 
+
+  <!-- =========================================================
+       MAIN
+  ========================================================== -->
+
   <main>
+
+
+    <!-- INTRO -->
 
     <section class="intro-card">
 
       <div class="question">
-        What changes when we move the expansion point?
+        How does a Taylor polynomial rebuild a function near a chosen point?
       </div>
 
-      <p id="introText"></p>
+      <p>
+        Type your own f(x), move the expansion point
+        <strong>a</strong>, and increase the Taylor degree
+        one term at a time.
+      </p>
 
     </section>
 
 
+
     <div class="layout">
 
-      <!-- LEFT SIDE -->
+
+      <!-- =====================================================
+           LEFT COLUMN
+      ====================================================== -->
 
       <section>
+
+
+        <!-- MAIN GRAPH -->
 
         <div class="card">
 
           <div class="card-header">
 
-            <h2 id="graphTitle"></h2>
+            <h2 id="graphTitle">
+              Function and Taylor approximation
+            </h2>
 
-            <button class="secondary-btn" id="resetBtn">
+            <button
+              class="secondary-btn"
+              id="resetBtn"
+            >
               Reset
             </button>
 
           </div>
 
+
           <div class="card-body">
+
 
             <div class="legend">
 
               <div class="legend-item">
-                <span class="legend-line legend-true"></span>
+
+                <span
+                  class="legend-line legend-true"
+                ></span>
+
                 True function
+
               </div>
 
-              <div class="legend-item">
-                <span class="legend-line legend-taylor"></span>
-                Taylor polynomial
-              </div>
 
               <div class="legend-item">
-                <span class="legend-expansion"></span>
+
+                <span
+                  class="legend-line legend-taylor"
+                ></span>
+
+                Taylor approximation
+
+              </div>
+
+
+              <div class="legend-item">
+
+                <span
+                  class="legend-expansion"
+                ></span>
+
                 Expansion point a
+
               </div>
 
+
               <div class="legend-item">
-                <span class="legend-selected"></span>
+
+                <span
+                  class="legend-selected"
+                ></span>
+
                 Selected x
+
               </div>
 
             </div>
 
+
             <div class="graph-wrap">
-              <canvas id="mainCanvas"></canvas>
+
+              <canvas
+                id="mainCanvas"
+              ></canvas>
+
             </div>
 
           </div>
@@ -640,15 +1428,22 @@
         </div>
 
 
+
         <!-- ERROR GRAPH -->
 
-        <div class="card" id="errorSection">
+        <div
+          class="card"
+          id="errorSection"
+        >
 
           <div class="card-header">
+
             <h3>
               Approximation error
             </h3>
+
           </div>
+
 
           <div class="card-body">
 
@@ -659,11 +1454,16 @@
                 margin-bottom:10px;
               "
             >
-              Error = true function − Taylor polynomial
+              Error = true function − Taylor approximation
             </div>
 
+
             <div class="small-graph-wrap">
-              <canvas id="errorCanvas"></canvas>
+
+              <canvas
+                id="errorCanvas"
+              ></canvas>
+
             </div>
 
           </div>
@@ -671,15 +1471,22 @@
         </div>
 
 
+
         <!-- TABLE -->
 
-        <div class="card" id="tableSection">
+        <div
+          class="card"
+          id="tableSection"
+        >
 
           <div class="card-header">
+
             <h3>
               What happens as the Taylor degree increases?
             </h3>
+
           </div>
+
 
           <div class="card-body">
 
@@ -688,16 +1495,37 @@
               <table>
 
                 <thead>
+
                   <tr>
-                    <th>Degree</th>
-                    <th>Taylor estimate</th>
-                    <th>True value</th>
-                    <th>Absolute error</th>
-                    <th>Error (%)</th>
+
+                    <th>
+                      Degree
+                    </th>
+
+                    <th>
+                      Taylor estimate
+                    </th>
+
+                    <th>
+                      True value
+                    </th>
+
+                    <th>
+                      Absolute error
+                    </th>
+
+                    <th>
+                      Error (%)
+                    </th>
+
                   </tr>
+
                 </thead>
 
-                <tbody id="approximationTableBody"></tbody>
+
+                <tbody
+                  id="approximationTableBody"
+                ></tbody>
 
               </table>
 
@@ -710,57 +1538,136 @@
       </section>
 
 
-      <!-- RIGHT SIDE -->
+
+      <!-- =====================================================
+           RIGHT COLUMN
+      ====================================================== -->
 
       <aside>
 
         <div class="card">
 
+
           <div class="card-header">
-            <h2>Explore</h2>
+
+            <h2>
+              Explore
+            </h2>
+
           </div>
+
 
           <div class="card-body">
 
 
-            <!-- FUNCTION -->
+            <!-- LIVE FUNCTION INPUT -->
 
             <div class="control-block">
 
+
               <div class="control-title">
-                <label for="functionSelect">
-                  Choose a function
+
+                <label for="functionInput">
+                  Enter f(x)
                 </label>
+
               </div>
 
-              <select id="functionSelect">
-                <option value="exp">eˣ</option>
-                <option value="cubic">x³ + 5x² − 4</option>
-              </select>
+
+              <input
+                id="functionInput"
+                class="function-input"
+                type="text"
+                value="e^x"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Function of x"
+              />
+
+
+              <div class="input-help">
+                Examples: e^x, sin(x), x^3 + 5x^2 - 4, 1/(1+x)
+              </div>
+
+
+              <div class="preset-row">
+
+                <button
+                  class="preset-btn"
+                  data-expression="e^x"
+                >
+                  eˣ
+                </button>
+
+
+                <button
+                  class="preset-btn"
+                  data-expression="x^3 + 5*x^2 - 4"
+                >
+                  Cubic
+                </button>
+
+
+                <button
+                  class="preset-btn"
+                  data-expression="sin(x)"
+                >
+                  sin(x)
+                </button>
+
+
+                <button
+                  class="preset-btn"
+                  data-expression="cos(x)"
+                >
+                  cos(x)
+                </button>
+
+
+                <button
+                  class="preset-btn"
+                  data-expression="1/(1+x)"
+                >
+                  1/(1+x)
+                </button>
+
+              </div>
+
+
+              <div
+                id="functionStatus"
+                class="function-status"
+              ></div>
 
             </div>
 
 
-            <!-- FORMULA -->
+
+            <!-- FORMULA CARD -->
 
             <div class="formula-card">
+
 
               <div class="formula-label">
                 Selected function
               </div>
 
+
               <div
                 class="formula"
                 id="selectedFunctionDisplay"
-              ></div>
+              >
+                f(x) = e^x
+              </div>
 
 
               <div class="formula-divider"></div>
 
 
               <div class="formula-label">
-                Taylor polynomial
+                Current Taylor polynomial
               </div>
+
 
               <div
                 class="formula"
@@ -773,24 +1680,21 @@
                 id="derivativeBox"
               ></div>
 
-
-              <div
-                class="exact-box"
-                id="exactBox"
-              ></div>
-
             </div>
+
 
 
             <!-- EXPANSION POINT -->
 
             <div class="control-block">
 
+
               <div class="control-title">
 
                 <label for="aSlider">
                   Expansion point
                 </label>
+
 
                 <span
                   class="control-value"
@@ -801,6 +1705,7 @@
 
               </div>
 
+
               <input
                 id="aSlider"
                 type="range"
@@ -810,18 +1715,23 @@
                 step="0.25"
               />
 
+
               <div class="range-labels">
+
                 <span>−3</span>
                 <span>0</span>
                 <span>3</span>
+
               </div>
 
             </div>
 
 
-            <!-- DEGREE -->
+
+            <!-- TAYLOR DEGREE -->
 
             <div class="control-block">
+
 
               <div class="control-title">
 
@@ -829,12 +1739,16 @@
                   Taylor degree
                 </label>
 
+
                 <span
                   class="control-value"
                   id="degreeValue"
-                ></span>
+                >
+                  T₂
+                </span>
 
               </div>
+
 
               <input
                 id="degreeSlider"
@@ -845,12 +1759,16 @@
                 step="1"
               />
 
+
               <div class="range-labels">
+
                 <span>T₀</span>
-                <span id="maxDegreeLabel">T₁₀</span>
+                <span>T₁₀</span>
+
               </div>
 
             </div>
+
 
 
             <!-- ADD TERM -->
@@ -861,21 +1779,24 @@
                 class="primary-btn"
                 id="addDegreeBtn"
               >
-                + Add next Taylor term
+                + Add degree 3 term
               </button>
 
             </div>
 
 
-            <!-- SELECT X -->
+
+            <!-- CHOOSE X -->
 
             <div class="control-block">
+
 
               <div class="control-title">
 
                 <label for="xSlider">
-                  Evaluate at x
+                  Choose x
                 </label>
+
 
                 <span
                   class="control-value"
@@ -886,6 +1807,7 @@
 
               </div>
 
+
               <input
                 id="xSlider"
                 type="range"
@@ -895,18 +1817,23 @@
                 step="0.05"
               />
 
+
               <div class="range-labels">
+
                 <span>−3</span>
                 <span>0</span>
                 <span>3</span>
+
               </div>
 
             </div>
 
 
+
             <!-- METRICS -->
 
             <div class="metric-grid">
+
 
               <div class="metric">
 
@@ -917,9 +1844,12 @@
                 <div
                   class="metric-value"
                   id="actualValue"
-                ></div>
+                >
+                  —
+                </div>
 
               </div>
+
 
 
               <div class="metric highlight">
@@ -931,9 +1861,12 @@
                 <div
                   class="metric-value"
                   id="estimateValue"
-                ></div>
+                >
+                  —
+                </div>
 
               </div>
+
 
 
               <div class="metric">
@@ -945,9 +1878,12 @@
                 <div
                   class="metric-value"
                   id="absoluteError"
-                ></div>
+                >
+                  —
+                </div>
 
               </div>
+
 
 
               <div class="metric">
@@ -959,22 +1895,31 @@
                 <div
                   class="metric-value"
                   id="percentageError"
-                ></div>
+                >
+                  —
+                </div>
 
               </div>
 
             </div>
 
 
+
+            <!-- INSIGHT -->
+
             <div
               class="insight"
               id="insightBox"
-            ></div>
+            >
+              Move x or increase the Taylor degree to explore the approximation.
+            </div>
+
 
 
             <!-- OPTIONS -->
 
             <div class="options">
+
 
               <div class="option-row">
 
@@ -998,7 +1943,7 @@
                 />
 
                 <label for="showTable">
-                  Show degree-by-degree table
+                  Show approximation table
                 </label>
 
               </div>
@@ -1014,1143 +1959,2481 @@
     </div>
 
 
-    <!-- LEARNING PROMPT -->
+
+    <!-- =====================================================
+         LEARNING PROMPT
+    ====================================================== -->
 
     <section class="learning-block">
 
-      <h3 id="learningTitle"></h3>
+      <h3>
+        What do you notice?
+      </h3>
 
-      <p id="learningText"></p>
+      <p>
+        Keep the Taylor degree fixed and move the expansion point.
+        Then keep the expansion point fixed and increase the degree.
+        Which change has the bigger effect at your selected x-value?
+      </p>
 
     </section>
 
   </main>
 
 
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================== -->
+
   <footer>
-    Taylor Series Explorer · Interactive classroom activity
+    Taylor Series Explorer (made with ChatGPT by Izzy)
   </footer>
 
 
 
-<script>
+  <!-- =========================================================
+       MATH.JS
+       Used for parsing functions and symbolic differentiation.
+  ========================================================== -->
 
-  /* =========================================================
-     STATE
-  ========================================================= */
-
-  let selectedFunction = "exp";
-
-  let expansionA = 0;
-  let selectedX = 1.5;
-  let degree = 2;
+  <script
+    src="https://cdn.jsdelivr.net/npm/mathjs@15.2.0/lib/browser/math.js"
+  ></script>
 
 
 
-  /* =========================================================
-     DOM
-  ========================================================= */
+  <!-- =========================================================
+       APP
+  ========================================================== -->
 
-  const functionSelect =
-    document.getElementById("functionSelect");
+  <script>
 
-  const aSlider =
-    document.getElementById("aSlider");
+    const MAX_DEGREE = 10;
 
-  const xSlider =
-    document.getElementById("xSlider");
-
-  const degreeSlider =
-    document.getElementById("degreeSlider");
+    const X_MIN = -3;
+    const X_MAX = 3;
 
 
-  const aValueLabel =
-    document.getElementById("aValueLabel");
+    let expressionText =
+      "e^x";
 
-  const xValueLabel =
-    document.getElementById("xValueLabel");
+    let parsedExpression =
+      null;
 
-  const degreeValue =
-    document.getElementById("degreeValue");
+    let functionCompiled =
+      null;
 
-  const maxDegreeLabel =
-    document.getElementById("maxDegreeLabel");
+    let derivativeNodes =
+      [];
 
+    let derivativeCompiled =
+      [];
 
-  const selectedFunctionDisplay =
-    document.getElementById("selectedFunctionDisplay");
+    let expansionA =
+      0;
 
-  const formulaDisplay =
-    document.getElementById("formulaDisplay");
+    let selectedX =
+      1.5;
 
-  const derivativeBox =
-    document.getElementById("derivativeBox");
+    let degree =
+      2;
 
-  const exactBox =
-    document.getElementById("exactBox");
+    let expressionValid =
+      false;
 
-
-  const actualValue =
-    document.getElementById("actualValue");
-
-  const estimateValue =
-    document.getElementById("estimateValue");
-
-  const absoluteError =
-    document.getElementById("absoluteError");
-
-  const percentageError =
-    document.getElementById("percentageError");
-
-  const insightBox =
-    document.getElementById("insightBox");
-
-
-  const mainCanvas =
-    document.getElementById("mainCanvas");
-
-  const errorCanvas =
-    document.getElementById("errorCanvas");
-
-
-  const graphTitle =
-    document.getElementById("graphTitle");
-
-  const introText =
-    document.getElementById("introText");
-
-  const learningTitle =
-    document.getElementById("learningTitle");
-
-  const learningText =
-    document.getElementById("learningText");
-
-
-  const addDegreeBtn =
-    document.getElementById("addDegreeBtn");
-
-  const resetBtn =
-    document.getElementById("resetBtn");
-
-
-  const showError =
-    document.getElementById("showError");
-
-  const showTable =
-    document.getElementById("showTable");
-
-
-  const errorSection =
-    document.getElementById("errorSection");
-
-  const tableSection =
-    document.getElementById("tableSection");
-
-  const tableBody =
-    document.getElementById("approximationTableBody");
+    let typingTimer =
+      null;
 
 
 
-  /* =========================================================
-     MATH HELPERS
-  ========================================================= */
+    /* =========================================================
+       DOM ELEMENTS
+    ========================================================== */
 
-  function factorial(n) {
+    const functionInput =
+      document.getElementById(
+        "functionInput"
+      );
 
-    let result = 1;
 
-    for (let i = 2; i <= n; i++) {
-      result *= i;
+    const functionStatus =
+      document.getElementById(
+        "functionStatus"
+      );
+
+
+    const selectedFunctionDisplay =
+      document.getElementById(
+        "selectedFunctionDisplay"
+      );
+
+
+    const formulaDisplay =
+      document.getElementById(
+        "formulaDisplay"
+      );
+
+
+    const derivativeBox =
+      document.getElementById(
+        "derivativeBox"
+      );
+
+
+    const aSlider =
+      document.getElementById(
+        "aSlider"
+      );
+
+
+    const degreeSlider =
+      document.getElementById(
+        "degreeSlider"
+      );
+
+
+    const xSlider =
+      document.getElementById(
+        "xSlider"
+      );
+
+
+    const aValueLabel =
+      document.getElementById(
+        "aValueLabel"
+      );
+
+
+    const degreeValue =
+      document.getElementById(
+        "degreeValue"
+      );
+
+
+    const xValueLabel =
+      document.getElementById(
+        "xValueLabel"
+      );
+
+
+    const addDegreeBtn =
+      document.getElementById(
+        "addDegreeBtn"
+      );
+
+
+    const resetBtn =
+      document.getElementById(
+        "resetBtn"
+      );
+
+
+    const actualValue =
+      document.getElementById(
+        "actualValue"
+      );
+
+
+    const estimateValue =
+      document.getElementById(
+        "estimateValue"
+      );
+
+
+    const absoluteError =
+      document.getElementById(
+        "absoluteError"
+      );
+
+
+    const percentageError =
+      document.getElementById(
+        "percentageError"
+      );
+
+
+    const insightBox =
+      document.getElementById(
+        "insightBox"
+      );
+
+
+    const showError =
+      document.getElementById(
+        "showError"
+      );
+
+
+    const showTable =
+      document.getElementById(
+        "showTable"
+      );
+
+
+    const errorSection =
+      document.getElementById(
+        "errorSection"
+      );
+
+
+    const tableSection =
+      document.getElementById(
+        "tableSection"
+      );
+
+
+    const tableBody =
+      document.getElementById(
+        "approximationTableBody"
+      );
+
+
+    const mainCanvas =
+      document.getElementById(
+        "mainCanvas"
+      );
+
+
+    const errorCanvas =
+      document.getElementById(
+        "errorCanvas"
+      );
+
+
+
+    /* =========================================================
+       BASIC HELPERS
+    ========================================================== */
+
+    function factorial(n) {
+
+      let result =
+        1;
+
+
+      for (
+        let i = 2;
+        i <= n;
+        i++
+      ) {
+
+        result *=
+          i;
+
+      }
+
+
+      return result;
     }
 
-    return result;
-  }
 
 
-  function cubic(x) {
+    function subscriptNumber(n) {
 
-    return (
-      Math.pow(x, 3) +
-      5 * Math.pow(x, 2) -
-      4
-    );
-  }
-
-
-  function cubicFirst(x) {
-
-    return (
-      3 * Math.pow(x, 2) +
-      10 * x
-    );
-  }
+      const map = {
+        "0": "₀",
+        "1": "₁",
+        "2": "₂",
+        "3": "₃",
+        "4": "₄",
+        "5": "₅",
+        "6": "₆",
+        "7": "₇",
+        "8": "₈",
+        "9": "₉"
+      };
 
 
-  function cubicSecond(x) {
-
-    return 6 * x + 10;
-  }
-
-
-
-  /* =========================================================
-     TRUE FUNCTION
-  ========================================================= */
-
-  function trueFunction(x) {
-
-    if (selectedFunction === "exp") {
-      return Math.exp(x);
+      return String(n)
+        .split("")
+        .map(
+          d =>
+            map[d]
+        )
+        .join("");
     }
 
-    return cubic(x);
-  }
+
+
+    function superscriptNumber(n) {
+
+      const map = {
+        "0": "⁰",
+        "1": "¹",
+        "2": "²",
+        "3": "³",
+        "4": "⁴",
+        "5": "⁵",
+        "6": "⁶",
+        "7": "⁷",
+        "8": "⁸",
+        "9": "⁹"
+      };
+
+
+      return String(n)
+        .split("")
+        .map(
+          d =>
+            map[d]
+        )
+        .join("");
+    }
 
 
 
-  /* =========================================================
-     TAYLOR POLYNOMIAL
-  ========================================================= */
+    /* =========================================================
+       FUNCTION INPUT NORMALIZATION
+    ========================================================== */
 
-  function taylorValue(x, n, a) {
+    function normalizeExpression(raw) {
 
-    const h = x - a;
+      return raw
+
+        .trim()
+
+        .replaceAll(
+          "−",
+          "-"
+        )
+
+        .replaceAll(
+          "–",
+          "-"
+        )
+
+        .replaceAll(
+          "×",
+          "*"
+        )
+
+        .replaceAll(
+          "÷",
+          "/"
+        )
+
+        .replaceAll(
+          "π",
+          "pi"
+        )
+
+        .replaceAll(
+          "²",
+          "^2"
+        )
+
+        .replaceAll(
+          "³",
+          "^3"
+        )
+
+        .replaceAll(
+          "⁴",
+          "^4"
+        )
+
+        .replace(
+          /\bln\s*\(/gi,
+          "log("
+        );
+
+    }
 
 
-    if (selectedFunction === "exp") {
 
-      let sum = 0;
+    /* =========================================================
+       MATH.JS VALUE CONVERSION
+    ========================================================== */
 
-      for (let k = 0; k <= n; k++) {
+    function toRealNumber(value) {
+
+      if (
+        typeof value ===
+        "number"
+      ) {
+
+        return Number.isFinite(
+          value
+        )
+          ? value
+          : NaN;
+
+      }
+
+
+      if (
+        value &&
+        typeof value ===
+        "object" &&
+        "re" in value &&
+        "im" in value
+      ) {
+
+        return (
+          Math.abs(value.im) <
+          1e-10 &&
+          Number.isFinite(value.re)
+        )
+          ? value.re
+          : NaN;
+
+      }
+
+
+      const converted =
+        Number(value);
+
+
+      return Number.isFinite(
+        converted
+      )
+        ? converted
+        : NaN;
+
+    }
+
+
+
+    function evaluateCompiled(
+      compiled,
+      x
+    ) {
+
+      try {
+
+        return toRealNumber(
+          compiled.evaluate({
+            x
+          })
+        );
+
+      } catch (_) {
+
+        return NaN;
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       PARSE FUNCTION
+    ========================================================== */
+
+    function parseCurrentExpression() {
+
+      const normalized =
+        normalizeExpression(
+          functionInput.value
+        );
+
+
+      if (!normalized) {
+
+        setExpressionError(
+          "Enter a function of x."
+        );
+
+        return;
+      }
+
+
+      try {
+
+        const node =
+          math.parse(
+            normalized
+          );
+
+
+        const compiled =
+          node.compile();
+
+
+        /*
+          Quick test to ensure the expression
+          can at least be evaluated.
+        */
+
+        compiled.evaluate({
+          x: 0.371
+        });
+
+
+        const nodes =
+          [node];
+
+
+        const compiledDerivatives =
+          [compiled];
+
+
+        let current =
+          node;
+
+
+        /*
+          Build symbolic derivatives
+          up to degree 10.
+        */
+
+        for (
+          let k = 1;
+          k <= MAX_DEGREE;
+          k++
+        ) {
+
+          current =
+            math.simplify(
+              math.derivative(
+                current,
+                "x"
+              )
+            );
+
+
+          nodes.push(
+            current
+          );
+
+
+          compiledDerivatives.push(
+            current.compile()
+          );
+
+        }
+
+
+        expressionText =
+          normalized;
+
+
+        parsedExpression =
+          node;
+
+
+        functionCompiled =
+          compiled;
+
+
+        derivativeNodes =
+          nodes;
+
+
+        derivativeCompiled =
+          compiledDerivatives;
+
+
+        expressionValid =
+          true;
+
+
+        functionStatus.textContent =
+          "✓ Function recognised";
+
+
+        functionStatus.className =
+          "function-status ok";
+
+
+        selectedFunctionDisplay.textContent =
+          `f(x) = ${functionInput.value.trim()}`;
+
+
+        updateAll();
+
+      } catch (error) {
+
+        setExpressionError(
+          "I couldn't interpret that function. Try e^x, sin(x), or x^3 + 5x^2 - 4."
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       INVALID FUNCTION
+    ========================================================== */
+
+    function setExpressionError(
+      message
+    ) {
+
+      expressionValid =
+        false;
+
+
+      functionStatus.textContent =
+        message;
+
+
+      functionStatus.className =
+        "function-status error";
+
+
+      formulaDisplay.textContent =
+        "—";
+
+
+      derivativeBox.innerHTML =
+        "";
+
+
+      actualValue.textContent =
+        "—";
+
+
+      estimateValue.textContent =
+        "—";
+
+
+      absoluteError.textContent =
+        "—";
+
+
+      percentageError.textContent =
+        "—";
+
+
+      insightBox.className =
+        "insight error";
+
+
+      insightBox.textContent =
+        message;
+
+
+      clearCanvas(
+        mainCanvas
+      );
+
+
+      clearCanvas(
+        errorCanvas
+      );
+
+
+      tableBody.innerHTML =
+        "";
+
+    }
+
+
+
+    /* =========================================================
+       TRUE FUNCTION
+    ========================================================== */
+
+    function trueValue(x) {
+
+      if (
+        !expressionValid ||
+        !functionCompiled
+      ) {
+
+        return NaN;
+
+      }
+
+
+      return evaluateCompiled(
+        functionCompiled,
+        x
+      );
+
+    }
+
+
+
+    /* =========================================================
+       DERIVATIVE VALUES
+    ========================================================== */
+
+    function derivativeValue(
+      order,
+      a
+    ) {
+
+      if (
+        !expressionValid ||
+        !derivativeCompiled[order]
+      ) {
+
+        return NaN;
+
+      }
+
+
+      return evaluateCompiled(
+        derivativeCompiled[order],
+        a
+      );
+
+    }
+
+
+
+    /* =========================================================
+       TAYLOR VALUE
+    ========================================================== */
+
+    function taylorValue(
+      x,
+      n,
+      a
+    ) {
+
+      if (!expressionValid) {
+
+        return NaN;
+
+      }
+
+
+      let sum =
+        0;
+
+
+      const h =
+        x - a;
+
+
+      for (
+        let k = 0;
+        k <= n;
+        k++
+      ) {
+
+        const derivativeAtA =
+          derivativeValue(
+            k,
+            a
+          );
+
+
+        if (
+          !Number.isFinite(
+            derivativeAtA
+          )
+        ) {
+
+          return NaN;
+
+        }
+
 
         sum +=
-          Math.pow(h, k) /
+          derivativeAtA *
+          Math.pow(
+            h,
+            k
+          ) /
           factorial(k);
 
       }
 
-      return Math.exp(a) * sum;
+
+      return sum;
+
     }
 
 
-    /*
-      For f(x) = x³ + 5x² − 4:
 
-      f(a) = a³ + 5a² − 4
-      f'(a) = 3a² + 10a
-      f''(a)/2! = 3a + 5
-      f'''(a)/3! = 1
-    */
+    /* =========================================================
+       NUMBER FORMATTING
+    ========================================================== */
 
+    function cleanNumber(
+      value,
+      digits = 5
+    ) {
 
-    let result = cubic(a);
+      if (
+        !Number.isFinite(
+          value
+        )
+      ) {
 
+        return "undefined";
 
-    if (n >= 1) {
-
-      result +=
-        cubicFirst(a) *
-        h;
-    }
-
-
-    if (n >= 2) {
-
-      result +=
-        (3 * a + 5) *
-        Math.pow(h, 2);
-    }
+      }
 
 
-    if (n >= 3) {
+      if (
+        Math.abs(value) <
+        1e-10
+      ) {
 
-      result +=
-        Math.pow(h, 3);
-    }
+        return "0";
 
-
-    return result;
-  }
-
+      }
 
 
-  /* =========================================================
-     NUMBER FORMATTING
-  ========================================================= */
+      if (
+        Math.abs(value) >=
+        100000 ||
+        Math.abs(value) <
+        0.00001
+      ) {
 
-  function cleanNumber(value, digits = 4) {
-
-    if (Math.abs(value) < 1e-10) {
-      return "0";
-    }
-
-    const rounded =
-      Number(
-        value.toFixed(digits)
-      );
-
-    return String(rounded);
-  }
-
-
-  function fixedNumber(value) {
-
-    if (Math.abs(value) < 1e-10) {
-      return "0.00000";
-    }
-
-    if (Math.abs(value) >= 10000) {
-      return value.toExponential(4);
-    }
-
-    return value.toFixed(5);
-  }
-
-
-
-  /* =========================================================
-     EXPANSION BASE
-  ========================================================= */
-
-  function expansionBase(a) {
-
-    if (Math.abs(a) < 1e-10) {
-      return "x";
-    }
-
-    if (a > 0) {
-      return `(x − ${cleanNumber(a, 2)})`;
-    }
-
-    return `(x + ${cleanNumber(Math.abs(a), 2)})`;
-  }
-
-
-
-  /* =========================================================
-     FORMULA BUILDERS
-  ========================================================= */
-
-  function powerText(base, power) {
-
-    if (power === 1) {
-      return base;
-    }
-
-    const superscripts = {
-      2: "²",
-      3: "³",
-      4: "⁴",
-      5: "⁵",
-      6: "⁶",
-      7: "⁷",
-      8: "⁸",
-      9: "⁹",
-      10: "¹⁰"
-    };
-
-    return (
-      base +
-      (superscripts[power] || `^${power}`)
-    );
-  }
-
-
-
-  function expFormula(n, a) {
-
-    const base =
-      expansionBase(a);
-
-    const parts = ["1"];
-
-
-    for (let k = 1; k <= n; k++) {
-
-      if (k === 1) {
-
-        parts.push(base);
-
-      } else {
-
-        parts.push(
-          `${powerText(base, k)}/${k}!`
+        return value.toExponential(
+          4
         );
 
       }
+
+
+      return String(
+        Number(
+          value.toFixed(
+            digits
+          )
+        )
+      );
+
     }
 
 
-    const ea =
-      `e<sup>${cleanNumber(a, 2)}</sup>`;
 
-
-    return (
-      `T<sub>${n}</sub>(x) = ` +
-      ea +
-      ` [${parts.join(" + ")}]`
-    );
-  }
-
-
-
-  function signedTerm(
-    coefficient,
-    base,
-    power
-  ) {
-
-    const value =
-      Math.abs(coefficient) < 1e-10
-        ? 0
-        : coefficient;
-
-
-    const variable =
-      powerText(base, power);
-
-
-    if (value === 0) {
-
-      return ` + 0${variable}`;
-    }
-
-
-    const sign =
-      value >= 0
-        ? " + "
-        : " − ";
-
-
-    const absValue =
-      Math.abs(value);
-
-
-    let coefficientText = "";
-
-
-    if (
-      Math.abs(absValue - 1) >
-      1e-10
+    function fixedNumber(
+      value
     ) {
 
-      coefficientText =
-        cleanNumber(
-          absValue,
+      if (
+        !Number.isFinite(
+          value
+        )
+      ) {
+
+        return "undefined";
+
+      }
+
+
+      if (
+        Math.abs(value) <
+        1e-10
+      ) {
+
+        return "0.00000";
+
+      }
+
+
+      if (
+        Math.abs(value) >=
+        10000
+      ) {
+
+        return value.toExponential(
           4
         );
+
+      }
+
+
+      return value.toFixed(
+        5
+      );
+
     }
 
 
-    return (
-      sign +
-      coefficientText +
-      variable
-    );
-  }
+
+    /* =========================================================
+       (x - a) DISPLAY
+    ========================================================== */
+
+    function expansionBase(a) {
+
+      if (
+        Math.abs(a) <
+        1e-10
+      ) {
+
+        return "x";
+
+      }
 
 
+      if (a > 0) {
 
-  function cubicFormula(n, a) {
-
-    const base =
-      expansionBase(a);
-
-
-    const c0 =
-      cubic(a);
-
-    const c1 =
-      cubicFirst(a);
-
-    const c2 =
-      3 * a + 5;
-
-
-    let result =
-      `T<sub>${n}</sub>(x) = ` +
-      cleanNumber(c0, 4);
-
-
-    if (n >= 1) {
-
-      result +=
-        signedTerm(
-          c1,
-          base,
-          1
+        return (
+          `(x − ${cleanNumber(
+            a,
+            3
+          )})`
         );
-    }
+
+      }
 
 
-    if (n >= 2) {
-
-      result +=
-        signedTerm(
-          c2,
-          base,
-          2
-        );
-    }
-
-
-    if (n >= 3) {
-
-      result +=
-        signedTerm(
-          1,
-          base,
+      return (
+        `(x + ${cleanNumber(
+          Math.abs(a),
           3
-        );
-    }
-
-
-    return result;
-  }
-
-
-
-  function updateFormula() {
-
-    if (selectedFunction === "exp") {
-
-      formulaDisplay.innerHTML =
-        expFormula(
-          degree,
-          expansionA
-        );
-
-    } else {
-
-      formulaDisplay.innerHTML =
-        cubicFormula(
-          degree,
-          expansionA
-        );
+        )})`
+      );
 
     }
-  }
 
 
 
-  /* =========================================================
-     DERIVATIVE EXPLANATION
-  ========================================================= */
+    /* =========================================================
+       TAYLOR FORMULA DISPLAY
+    ========================================================== */
 
-  function updateDerivativeBox() {
-
-    if (selectedFunction === "exp") {
-
-      const ea =
-        Math.exp(expansionA);
-
-
-      derivativeBox.innerHTML = `
-        Expansion point:
-        <strong>a = ${cleanNumber(expansionA, 2)}</strong>
-        <br><br>
-
-        For f(x) = e<sup>x</sup>, every derivative is e<sup>x</sup>.
-        Therefore at x = a:
-        <br>
-
-        f(a) = f′(a) = f″(a) = ⋯ = e<sup>a</sup>
-        = <strong>${cleanNumber(ea, 5)}</strong>.
-        <br><br>
-
-        The Taylor polynomial uses powers of
-        <strong>x − a</strong>.
-      `;
-
-      exactBox.style.display =
-        "none";
-
-      return;
-    }
-
-
-    const fa =
-      cubic(expansionA);
-
-    const f1 =
-      cubicFirst(expansionA);
-
-    const f2 =
-      cubicSecond(expansionA);
-
-    const c2 =
-      f2 / 2;
-
-    const base =
-      expansionBase(expansionA);
-
-
-    derivativeBox.innerHTML = `
-      Expansion point:
-      <strong>a = ${cleanNumber(expansionA, 2)}</strong>
-      <br><br>
-
-      f(a) = ${cleanNumber(fa, 4)}
-      <br>
-
-      f′(a) = ${cleanNumber(f1, 4)}
-      <br>
-
-      f″(a)/2! =
-      ${cleanNumber(f2, 4)}/2
-      =
-      ${cleanNumber(c2, 4)}
-      <br>
-
-      f‴(a)/3! =
-      6/6
-      =
-      1
-    `;
-
-
-    if (degree >= 3) {
-
-      exactBox.style.display =
-        "block";
-
-      exactBox.innerHTML = `
-        <strong>Exact match.</strong>
-        Once the cubic term is included, expanding and simplifying the
-        Taylor polynomial gives:
-
-        <div class="exact-formula">
-          ${cubicFormula(3, expansionA)
-            .replace(
-              `T<sub>3</sub>(x) = `,
-              ""
-            )}
-        </div>
-
-        <div style="margin-top:7px;">
-          ↓ expand and collect like terms
-        </div>
-
-        <div class="exact-formula">
-          x³ + 5x² − 4
-        </div>
-      `;
-
-    } else {
-
-      exactBox.style.display =
-        "none";
-
-    }
-  }
-
-
-
-  /* =========================================================
-     PAGE TEXT
-  ========================================================= */
-
-  function updatePageText() {
-
-    if (selectedFunction === "exp") {
-
-      selectedFunctionDisplay.innerHTML =
-        "f(x) = e<sup>x</sup>";
-
-      graphTitle.innerHTML =
-        "e<sup>x</sup> and its Taylor polynomial";
-
-      introText.innerHTML =
-        "Move the expansion point <strong>a</strong>. The Taylor polynomial changes because it is built from the behaviour of e<sup>x</sup> at that new point.";
-
-      learningTitle.textContent =
-        "What happens when you move a?";
-
-      learningText.innerHTML =
-        "Keep the Taylor degree fixed and move the expansion point. The polynomial follows e<sup>x</sup> most closely around the chosen expansion point. Then increase the degree and observe how the accurate region becomes wider.";
-
-    } else {
-
-      selectedFunctionDisplay.innerHTML =
-        "f(x) = x³ + 5x² − 4";
-
-      graphTitle.innerHTML =
-        "x³ + 5x² − 4 and its Taylor polynomial";
-
-      introText.innerHTML =
-        "Move the expansion point <strong>a</strong> and watch the coefficients change. At degree 3, every expansion point produces the same original cubic after simplification.";
-
-      learningTitle.textContent =
-        "Different Taylor form, same polynomial";
-
-      learningText.innerHTML =
-        "Try a = 0, then a = 3. The Taylor expressions look very different, but once degree 3 is included and the brackets are expanded, both simplify to x³ + 5x² − 4.";
-
-    }
-  }
-
-
-
-  /* =========================================================
-     CANVAS
-  ========================================================= */
-
-  function setupCanvas(canvas) {
-
-    const rect =
-      canvas.getBoundingClientRect();
-
-
-    if (
-      rect.width < 2 ||
-      rect.height < 2
+    function formatTaylorTerm(
+      coefficient,
+      base,
+      power,
+      firstTerm
     ) {
 
-      return null;
+      const c =
+        Math.abs(coefficient) <
+        1e-12
+          ? 0
+          : coefficient;
+
+
+      if (
+        power === 0
+      ) {
+
+        return cleanNumber(
+          c,
+          5
+        );
+
+      }
+
+
+      const sign =
+        c >= 0
+          ? (
+              firstTerm
+                ? ""
+                : " + "
+            )
+          : " − ";
+
+
+      const absC =
+        Math.abs(c);
+
+
+      const coefficientText =
+        Math.abs(
+          absC - 1
+        ) < 1e-10
+          ? ""
+          : cleanNumber(
+              absC,
+              5
+            );
+
+
+      const variable =
+        power === 1
+          ? base
+          : (
+              base +
+              superscriptNumber(
+                power
+              )
+            );
+
+
+      if (c === 0) {
+
+        return (
+          (
+            firstTerm
+              ? ""
+              : " + "
+          ) +
+          "0" +
+          variable
+        );
+
+      }
+
+
+      return (
+        sign +
+        coefficientText +
+        variable
+      );
+
     }
 
 
-    const dpr =
-      window.devicePixelRatio || 1;
+
+    function buildTaylorFormula() {
+
+      if (!expressionValid) {
+
+        return "—";
+
+      }
 
 
-    canvas.width =
-      rect.width * dpr;
-
-    canvas.height =
-      rect.height * dpr;
-
-
-    const ctx =
-      canvas.getContext("2d");
-
-
-    ctx.setTransform(
-      dpr,
-      0,
-      0,
-      dpr,
-      0,
-      0
-    );
-
-
-    return {
-      ctx,
-      width: rect.width,
-      height: rect.height
-    };
-  }
-
-
-
-  function cssColor(variable) {
-
-    return getComputedStyle(
-      document.documentElement
-    )
-    .getPropertyValue(variable)
-    .trim();
-  }
-
-
-
-  /* =========================================================
-     Y RANGE
-  ========================================================= */
-
-  function determineYRange() {
-
-    let minimum =
-      Infinity;
-
-    let maximum =
-      -Infinity;
-
-
-    for (
-      let i = 0;
-      i <= 400;
-      i++
-    ) {
-
-      const x =
-        -3 +
-        6 * i / 400;
-
-
-      const values = [
-        trueFunction(x),
-        taylorValue(
-          x,
-          degree,
+      const base =
+        expansionBase(
           expansionA
-        )
-      ];
+        );
 
 
-      values.forEach(value => {
+      let result =
+        `T${subscriptNumber(degree)}(x) = `;
+
+
+      for (
+        let k = 0;
+        k <= degree;
+        k++
+      ) {
+
+        const derivativeAtA =
+          derivativeValue(
+            k,
+            expansionA
+          );
+
 
         if (
-          Number.isFinite(value) &&
-          Math.abs(value) < 100000
+          !Number.isFinite(
+            derivativeAtA
+          )
         ) {
 
-          minimum =
-            Math.min(
-              minimum,
-              value
-            );
-
-          maximum =
-            Math.max(
-              maximum,
-              value
-            );
+          return (
+            `T${subscriptNumber(degree)}(x) ` +
+            `is not defined at a = ` +
+            cleanNumber(
+              expansionA,
+              3
+            )
+          );
 
         }
 
-      });
+
+        const coefficient =
+          derivativeAtA /
+          factorial(k);
+
+
+        result +=
+          formatTaylorTerm(
+            coefficient,
+            base,
+            k,
+            k === 0
+          );
+
+      }
+
+
+      return result;
+
     }
 
 
-    minimum =
-      Math.min(
-        minimum,
-        0
-      );
 
-    maximum =
-      Math.max(
-        maximum,
-        0
-      );
+    /* =========================================================
+       EXACT POLYNOMIAL DETECTION
+    ========================================================== */
+
+    function isNextDerivativeZero() {
+
+      if (
+        !expressionValid ||
+        degree >= MAX_DEGREE
+      ) {
+
+        return false;
+
+      }
 
 
-    if (
-      !Number.isFinite(minimum) ||
-      !Number.isFinite(maximum)
-    ) {
+      try {
 
-      return {
-        min: -10,
-        max: 10
-      };
+        return (
+          math
+            .simplify(
+              derivativeNodes[
+                degree + 1
+              ]
+            )
+            .toString()
+          ===
+          "0"
+        );
+
+      } catch (_) {
+
+        return false;
+
+      }
+
     }
 
 
-    if (
-      Math.abs(
-        maximum -
-        minimum
-      ) < 1e-8
-    ) {
 
-      return {
-        min: minimum - 1,
-        max: maximum + 1
-      };
+    /* =========================================================
+       DERIVATIVE DISPLAY
+    ========================================================== */
+
+    function updateDerivativeBox() {
+
+      if (!expressionValid) {
+
+        return;
+
+      }
+
+
+      let html =
+        `<strong>At a = ${cleanNumber(
+          expansionA,
+          3
+        )}</strong><br>`;
+
+
+      const maxShown =
+        Math.min(
+          degree,
+          5
+        );
+
+
+      for (
+        let k = 0;
+        k <= maxShown;
+        k++
+      ) {
+
+        const value =
+          derivativeValue(
+            k,
+            expansionA
+          );
+
+
+        const label =
+          k === 0
+            ? "f(a)"
+            : (
+                `f${primeMarks(k)}(a)`
+              );
+
+
+        html +=
+          `${label} = ${cleanNumber(
+            value,
+            6
+          )}<br>`;
+
+      }
+
+
+      if (
+        degree > 5
+      ) {
+
+        html +=
+          `<span style="color:#8a909a;">` +
+          `Higher derivatives are included in ` +
+          `T${subscriptNumber(degree)}.` +
+          `</span><br>`;
+
+      }
+
+
+      if (
+        isNextDerivativeZero()
+      ) {
+
+        html +=
+          `<br>` +
+          `<strong style="color:#145b41;">` +
+          `The next derivative is zero, so this Taylor polynomial is exact everywhere.` +
+          `</strong>`;
+
+      }
+
+
+      derivativeBox.innerHTML =
+        html;
+
     }
 
 
-    const padding =
-      0.1 *
-      (
-        maximum -
-        minimum
-      );
 
+    function primeMarks(k) {
 
-    return {
-      min: minimum - padding,
-      max: maximum + padding
-    };
-  }
+      if (
+        k <= 3
+      ) {
 
+        return "′".repeat(
+          k
+        );
 
+      }
 
-  /* =========================================================
-     MAIN GRAPH
-  ========================================================= */
-
-  function drawMainGraph() {
-
-    const canvasData =
-      setupCanvas(mainCanvas);
-
-
-    if (!canvasData) {
-      return;
-    }
-
-
-    const {
-      ctx,
-      width,
-      height
-    } = canvasData;
-
-
-    ctx.clearRect(
-      0,
-      0,
-      width,
-      height
-    );
-
-
-    const margin = {
-      left: 62,
-      right: 22,
-      top: 18,
-      bottom: 42
-    };
-
-
-    const xMin = -3;
-    const xMax = 3;
-
-
-    const yRange =
-      determineYRange();
-
-
-    const yMin =
-      yRange.min;
-
-    const yMax =
-      yRange.max;
-
-
-    function px(x) {
 
       return (
-        margin.left +
-        (
-          (x - xMin) /
-          (xMax - xMin)
-        ) *
-        (
-          width -
-          margin.left -
-          margin.right
+        `<sup>(${k})</sup>`
+      );
+
+    }
+
+
+
+    /* =========================================================
+       CANVAS SETUP
+    ========================================================== */
+
+    function setupCanvas(
+      canvas
+    ) {
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+
+      if (
+        rect.width < 2 ||
+        rect.height < 2
+      ) {
+
+        return null;
+
+      }
+
+
+      const dpr =
+        window.devicePixelRatio ||
+        1;
+
+
+      canvas.width =
+        rect.width *
+        dpr;
+
+
+      canvas.height =
+        rect.height *
+        dpr;
+
+
+      const ctx =
+        canvas.getContext(
+          "2d"
+        );
+
+
+      ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+      );
+
+
+      return {
+        ctx,
+        width:
+          rect.width,
+        height:
+          rect.height
+      };
+
+    }
+
+
+
+    function clearCanvas(
+      canvas
+    ) {
+
+      const data =
+        setupCanvas(
+          canvas
+        );
+
+
+      if (data) {
+
+        data.ctx.clearRect(
+          0,
+          0,
+          data.width,
+          data.height
+        );
+
+      }
+
+    }
+
+
+
+    function cssColor(
+      variable
+    ) {
+
+      return getComputedStyle(
+        document.documentElement
+      )
+        .getPropertyValue(
+          variable
         )
-      );
+        .trim();
+
     }
 
 
-    function py(y) {
+
+    /* =========================================================
+       QUANTILE
+    ========================================================== */
+
+    function quantile(
+      sorted,
+      q
+    ) {
+
+      if (
+        !sorted.length
+      ) {
+
+        return NaN;
+
+      }
+
+
+      const pos =
+        (
+          sorted.length -
+          1
+        ) *
+        q;
+
+
+      const base =
+        Math.floor(
+          pos
+        );
+
+
+      const rest =
+        pos -
+        base;
+
 
       return (
-        height -
-        margin.bottom -
+        sorted[
+          base + 1
+        ] !==
+        undefined
+      )
+        ? (
+            sorted[base] +
+            rest *
+            (
+              sorted[
+                base + 1
+              ] -
+              sorted[base]
+            )
+          )
+        : sorted[base];
+
+    }
+
+
+
+    /* =========================================================
+       AUTOMATIC Y RANGE
+    ========================================================== */
+
+    function determineYRange() {
+
+      const values =
+        [];
+
+
+      for (
+        let i = 0;
+        i <= 600;
+        i++
+      ) {
+
+        const x =
+          X_MIN +
+          (
+            X_MAX -
+            X_MIN
+          ) *
+          i /
+          600;
+
+
+        const candidates = [
+
+          trueValue(x),
+
+          taylorValue(
+            x,
+            degree,
+            expansionA
+          )
+
+        ];
+
+
+        candidates.forEach(
+          value => {
+
+            if (
+              Number.isFinite(
+                value
+              ) &&
+              Math.abs(value) <
+              1e6
+            ) {
+
+              values.push(
+                value
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+
+      if (
+        !values.length
+      ) {
+
+        return {
+          min: -5,
+          max: 5
+        };
+
+      }
+
+
+      values.sort(
+        (a, b) =>
+          a - b
+      );
+
+
+      let low =
+        quantile(
+          values,
+          0.02
+        );
+
+
+      let high =
+        quantile(
+          values,
+          0.98
+        );
+
+
+      /*
+        Always include y = 0,
+        so the horizontal axis
+        remains visible.
+      */
+
+      low =
+        Math.min(
+          low,
+          0
+        );
+
+
+      high =
+        Math.max(
+          high,
+          0
+        );
+
+
+      if (
+        !Number.isFinite(low) ||
+        !Number.isFinite(high) ||
+        Math.abs(
+          high - low
+        ) < 1e-8
+      ) {
+
+        return {
+          min: -5,
+          max: 5
+        };
+
+      }
+
+
+      const padding =
+        0.12 *
         (
-          (y - yMin) /
-          (yMax - yMin)
-        ) *
-        (
+          high -
+          low
+        );
+
+
+      return {
+        min:
+          low -
+          padding,
+
+        max:
+          high +
+          padding
+      };
+
+    }
+
+
+
+    /* =========================================================
+       MAIN GRAPH
+    ========================================================== */
+
+    function drawMainGraph() {
+
+      if (
+        !expressionValid
+      ) {
+
+        return;
+
+      }
+
+
+      const canvasData =
+        setupCanvas(
+          mainCanvas
+        );
+
+
+      if (
+        !canvasData
+      ) {
+
+        return;
+
+      }
+
+
+      const {
+        ctx,
+        width,
+        height
+      } =
+        canvasData;
+
+
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      const margin = {
+        left: 62,
+        right: 22,
+        top: 18,
+        bottom: 42
+      };
+
+
+      const range =
+        determineYRange();
+
+
+      const yMin =
+        range.min;
+
+
+      const yMax =
+        range.max;
+
+
+      function px(x) {
+
+        return (
+          margin.left +
+          (
+            (x - X_MIN) /
+            (
+              X_MAX -
+              X_MIN
+            )
+          ) *
+          (
+            width -
+            margin.left -
+            margin.right
+          )
+        );
+
+      }
+
+
+      function py(y) {
+
+        return (
           height -
-          margin.top -
+          margin.bottom -
+          (
+            (y - yMin) /
+            (
+              yMax -
+              yMin
+            )
+          ) *
+          (
+            height -
+            margin.top -
+            margin.bottom
+          )
+        );
+
+      }
+
+
+
+      /* =====================================================
+         VERTICAL GRID
+
+         x = 0 is intentionally darker
+         than the normal grid.
+      ====================================================== */
+
+      ctx.font =
+        "12px Arial";
+
+
+      ctx.fillStyle =
+        "#7a818b";
+
+
+      for (
+        let x = X_MIN;
+        x <= X_MAX;
+        x++
+      ) {
+
+        ctx.beginPath();
+
+
+        ctx.strokeStyle =
+          x === 0
+            ? "#78808a"
+            : "#eceef1";
+
+
+        ctx.lineWidth =
+          x === 0
+            ? 1.8
+            : 1;
+
+
+        ctx.moveTo(
+          px(x),
+          margin.top
+        );
+
+
+        ctx.lineTo(
+          px(x),
+          height -
           margin.bottom
-        )
-      );
-    }
+        );
+
+
+        ctx.stroke();
+
+
+        ctx.textAlign =
+          "center";
+
+
+        ctx.fillStyle =
+          "#7a818b";
+
+
+        ctx.fillText(
+          x,
+          px(x),
+          height -
+          margin.bottom +
+          20
+        );
+
+      }
 
 
 
-    /* GRID */
+      /* =====================================================
+         HORIZONTAL GRID
+      ====================================================== */
 
-    ctx.font =
-      "12px Arial";
-
-    ctx.fillStyle =
-      "#7a818b";
+      const yTicks =
+        6;
 
 
-    for (
-      let x = -3;
-      x <= 3;
-      x++
-    ) {
+      for (
+        let i = 0;
+        i <= yTicks;
+        i++
+      ) {
+
+        const y =
+          yMin +
+          (
+            yMax -
+            yMin
+          ) *
+          i /
+          yTicks;
+
+
+        ctx.beginPath();
+
+
+        ctx.strokeStyle =
+          "#eceef1";
+
+
+        ctx.lineWidth =
+          1;
+
+
+        ctx.moveTo(
+          margin.left,
+          py(y)
+        );
+
+
+        ctx.lineTo(
+          width -
+          margin.right,
+          py(y)
+        );
+
+
+        ctx.stroke();
+
+
+        ctx.textAlign =
+          "right";
+
+
+        ctx.fillStyle =
+          "#7a818b";
+
+
+        ctx.fillText(
+          cleanNumber(
+            y,
+            2
+          ),
+          margin.left -
+          8,
+          py(y) +
+          4
+        );
+
+      }
+
+
+
+      /* =====================================================
+         IMPORTANT:
+         Y = 0 AXIS
+
+         This is intentionally much
+         darker and thicker.
+      ====================================================== */
+
+      if (
+        0 >= yMin &&
+        0 <= yMax
+      ) {
+
+        ctx.beginPath();
+
+
+        ctx.strokeStyle =
+          cssColor(
+            "--navy"
+          );
+
+
+        ctx.lineWidth =
+          2.8;
+
+
+        ctx.moveTo(
+          margin.left,
+          py(0)
+        );
+
+
+        ctx.lineTo(
+          width -
+          margin.right,
+          py(0)
+        );
+
+
+        ctx.stroke();
+
+      }
+
+
+
+      /* =====================================================
+         EXPANSION POINT a
+      ====================================================== */
+
+      ctx.save();
+
+
+      ctx.strokeStyle =
+        cssColor(
+          "--asb-pink"
+        );
+
+
+      ctx.lineWidth =
+        3;
+
+
+      ctx.globalAlpha =
+        0.55;
+
+
+      ctx.setLineDash([
+        7,
+        6
+      ]);
+
 
       ctx.beginPath();
 
-      ctx.strokeStyle =
-        x === 0
-          ? "#b9bec5"
-          : "#eceef1";
-
-      ctx.lineWidth =
-        1;
 
       ctx.moveTo(
-        px(x),
+        px(expansionA),
         margin.top
       );
 
+
       ctx.lineTo(
-        px(x),
-        height - margin.bottom
+        px(expansionA),
+        height -
+        margin.bottom
       );
 
+
       ctx.stroke();
+
+
+      ctx.restore();
+
+
+
+      /* =====================================================
+         SELECTED X
+      ====================================================== */
+
+      ctx.save();
+
+
+      ctx.strokeStyle =
+        "#8e959e";
+
+
+      ctx.lineWidth =
+        1.4;
+
+
+      ctx.setLineDash([
+        4,
+        5
+      ]);
+
+
+      ctx.beginPath();
+
+
+      ctx.moveTo(
+        px(selectedX),
+        margin.top
+      );
+
+
+      ctx.lineTo(
+        px(selectedX),
+        height -
+        margin.bottom
+      );
+
+
+      ctx.stroke();
+
+
+      ctx.restore();
+
+
+
+      /* =====================================================
+         FUNCTION DRAWER
+      ====================================================== */
+
+      function drawFunction(
+        fn,
+        color,
+        lineWidth
+      ) {
+
+        ctx.beginPath();
+
+
+        ctx.strokeStyle =
+          color;
+
+
+        ctx.lineWidth =
+          lineWidth;
+
+
+        ctx.lineJoin =
+          "round";
+
+
+        let started =
+          false;
+
+
+        let previousY =
+          null;
+
+
+        const visibleSpan =
+          yMax -
+          yMin;
+
+
+        for (
+          let i = 0;
+          i <= 1000;
+          i++
+        ) {
+
+          const x =
+            X_MIN +
+            (
+              X_MAX -
+              X_MIN
+            ) *
+            i /
+            1000;
+
+
+          const y =
+            fn(x);
+
+
+          /*
+            Break the curve at undefined
+            points or huge discontinuities.
+          */
+
+          if (
+            !Number.isFinite(y) ||
+            y <
+            yMin -
+            4 *
+            visibleSpan ||
+            y >
+            yMax +
+            4 *
+            visibleSpan
+          ) {
+
+            started =
+              false;
+
+
+            previousY =
+              null;
+
+
+            continue;
+
+          }
+
+
+          if (
+            previousY !==
+            null &&
+            Math.abs(
+              y -
+              previousY
+            ) >
+            1.5 *
+            visibleSpan
+          ) {
+
+            started =
+              false;
+
+          }
+
+
+          if (!started) {
+
+            ctx.moveTo(
+              px(x),
+              py(y)
+            );
+
+
+            started =
+              true;
+
+          } else {
+
+            ctx.lineTo(
+              px(x),
+              py(y)
+            );
+
+          }
+
+
+          previousY =
+            y;
+
+        }
+
+
+        ctx.stroke();
+
+      }
+
+
+
+      /* TRUE FUNCTION */
+
+      drawFunction(
+
+        trueValue,
+
+        cssColor(
+          "--true-line"
+        ),
+
+        3
+
+      );
+
+
+
+      /* TAYLOR POLYNOMIAL */
+
+      drawFunction(
+
+        x =>
+          taylorValue(
+            x,
+            degree,
+            expansionA
+          ),
+
+        cssColor(
+          "--taylor-line"
+        ),
+
+        3
+
+      );
+
+
+
+      /* =====================================================
+         SELECTED POINTS
+      ====================================================== */
+
+      const yTrue =
+        trueValue(
+          selectedX
+        );
+
+
+      const yTaylor =
+        taylorValue(
+          selectedX,
+          degree,
+          expansionA
+        );
+
+
+      if (
+        Number.isFinite(
+          yTrue
+        ) &&
+        yTrue >= yMin &&
+        yTrue <= yMax
+      ) {
+
+        ctx.beginPath();
+
+
+        ctx.fillStyle =
+          cssColor(
+            "--true-line"
+          );
+
+
+        ctx.arc(
+          px(selectedX),
+          py(yTrue),
+          5.5,
+          0,
+          Math.PI *
+          2
+        );
+
+
+        ctx.fill();
+
+      }
+
+
+
+      if (
+        Number.isFinite(
+          yTaylor
+        ) &&
+        yTaylor >= yMin &&
+        yTaylor <= yMax
+      ) {
+
+        ctx.beginPath();
+
+
+        ctx.fillStyle =
+          cssColor(
+            "--asb-pink"
+          );
+
+
+        ctx.arc(
+          px(selectedX),
+          py(yTaylor),
+          6,
+          0,
+          Math.PI *
+          2
+        );
+
+
+        ctx.fill();
+
+      }
+
+
+
+      /* =====================================================
+         LABEL FOR a
+      ====================================================== */
+
+      ctx.fillStyle =
+        cssColor(
+          "--asb-pink"
+        );
+
+
+      ctx.font =
+        "bold 12px Arial";
 
 
       ctx.textAlign =
         "center";
 
+
       ctx.fillText(
-        x,
-        px(x),
-        height -
-        margin.bottom +
-        20
+        `a = ${cleanNumber(
+          expansionA,
+          2
+        )}`,
+        px(expansionA),
+        margin.top +
+        13
       );
+
     }
 
 
 
-    const yTicks = 5;
+    /* =========================================================
+       ERROR GRAPH
+    ========================================================== */
+
+    function drawErrorGraph() {
+
+      if (
+        !showError.checked ||
+        !expressionValid
+      ) {
+
+        return;
+
+      }
 
 
-    for (
-      let i = 0;
-      i <= yTicks;
-      i++
-    ) {
+      const canvasData =
+        setupCanvas(
+          errorCanvas
+        );
 
-      const y =
-        yMin +
-        (
-          yMax -
-          yMin
-        ) *
-        i /
-        yTicks;
 
+      if (
+        !canvasData
+      ) {
+
+        return;
+
+      }
+
+
+      const {
+        ctx,
+        width,
+        height
+      } =
+        canvasData;
+
+
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      const margin = {
+        left: 60,
+        right: 22,
+        top: 15,
+        bottom: 38
+      };
+
+
+      const errors =
+        [];
+
+
+      for (
+        let i = 0;
+        i <= 500;
+        i++
+      ) {
+
+        const x =
+          X_MIN +
+          (
+            X_MAX -
+            X_MIN
+          ) *
+          i /
+          500;
+
+
+        const trueY =
+          trueValue(x);
+
+
+        const taylorY =
+          taylorValue(
+            x,
+            degree,
+            expansionA
+          );
+
+
+        const error =
+          trueY -
+          taylorY;
+
+
+        if (
+          Number.isFinite(
+            error
+          ) &&
+          Math.abs(error) <
+          1e6
+        ) {
+
+          errors.push(
+            error
+          );
+
+        }
+
+      }
+
+
+      if (
+        !errors.length
+      ) {
+
+        return;
+
+      }
+
+
+      const sortedAbs =
+        errors
+          .map(
+            value =>
+              Math.abs(value)
+          )
+          .sort(
+            (a, b) =>
+              a - b
+          );
+
+
+      let maxAbs =
+        Math.max(
+
+          quantile(
+            sortedAbs,
+            0.98
+          ) *
+          1.15,
+
+          0.1
+
+        );
+
+
+      function px(x) {
+
+        return (
+          margin.left +
+          (
+            (x - X_MIN) /
+            (
+              X_MAX -
+              X_MIN
+            )
+          ) *
+          (
+            width -
+            margin.left -
+            margin.right
+          )
+        );
+
+      }
+
+
+      function py(y) {
+
+        return (
+          height -
+          margin.bottom -
+          (
+            (y + maxAbs) /
+            (
+              2 *
+              maxAbs
+            )
+          ) *
+          (
+            height -
+            margin.top -
+            margin.bottom
+          )
+        );
+
+      }
+
+
+
+      /* Y = 0 */
 
       ctx.beginPath();
 
+
       ctx.strokeStyle =
-        "#eceef1";
+        cssColor(
+          "--navy"
+        );
+
 
       ctx.lineWidth =
-        1;
+        2;
+
 
       ctx.moveTo(
         margin.left,
-        py(y)
+        py(0)
       );
 
+
       ctx.lineTo(
-        width - margin.right,
-        py(y)
+        width -
+        margin.right,
+        py(0)
       );
+
 
       ctx.stroke();
 
 
-      ctx.textAlign =
-        "right";
 
-      ctx.fillText(
-        cleanNumber(y, 1),
-        margin.left - 8,
-        py(y) + 4
-      );
-    }
-
-
-
-    /* EXPANSION POINT */
-
-    ctx.save();
-
-    ctx.strokeStyle =
-      cssColor("--asb-pink");
-
-    ctx.lineWidth =
-      3;
-
-    ctx.globalAlpha =
-      0.55;
-
-    ctx.setLineDash([
-      7,
-      6
-    ]);
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      px(expansionA),
-      margin.top
-    );
-
-    ctx.lineTo(
-      px(expansionA),
-      height - margin.bottom
-    );
-
-    ctx.stroke();
-
-    ctx.restore();
-
-
-
-    /* SELECTED X */
-
-    ctx.save();
-
-    ctx.strokeStyle =
-      cssColor("--selected-line");
-
-    ctx.lineWidth =
-      1.5;
-
-    ctx.setLineDash([
-      4,
-      5
-    ]);
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      px(selectedX),
-      margin.top
-    );
-
-    ctx.lineTo(
-      px(selectedX),
-      height - margin.bottom
-    );
-
-    ctx.stroke();
-
-    ctx.restore();
-
-
-
-    /* FUNCTION DRAWER */
-
-    function drawFunction(
-      fn,
-      color,
-      lineWidth
-    ) {
+      /* ERROR CURVE */
 
       ctx.beginPath();
 
+
       ctx.strokeStyle =
-        color;
+        cssColor(
+          "--error-line"
+        );
+
 
       ctx.lineWidth =
-        lineWidth;
-
-      ctx.lineJoin =
-        "round";
+        2.5;
 
 
       let started =
@@ -2159,48 +4442,54 @@
 
       for (
         let i = 0;
-        i <= 900;
+        i <= 500;
         i++
       ) {
 
         const x =
-          xMin +
+          X_MIN +
           (
-            xMax -
-            xMin
+            X_MAX -
+            X_MIN
           ) *
           i /
-          900;
+          500;
 
 
-        const y =
-          fn(x);
+        const error =
+          trueValue(x) -
+          taylorValue(
+            x,
+            degree,
+            expansionA
+          );
 
 
         if (
-          !Number.isFinite(y)
+          !Number.isFinite(
+            error
+          ) ||
+          Math.abs(error) >
+          maxAbs *
+          5
         ) {
 
           started =
             false;
 
+
           continue;
+
         }
-
-
-        const cx =
-          px(x);
-
-        const cy =
-          py(y);
 
 
         if (!started) {
 
           ctx.moveTo(
-            cx,
-            cy
+            px(x),
+            py(error)
           );
+
 
           started =
             true;
@@ -2208,8 +4497,8 @@
         } else {
 
           ctx.lineTo(
-            cx,
-            cy
+            px(x),
+            py(error)
           );
 
         }
@@ -2218,323 +4507,177 @@
 
 
       ctx.stroke();
-    }
 
 
 
-    /* TRUE FUNCTION */
+      /* EXPANSION POINT */
 
-    drawFunction(
-      x =>
-        trueFunction(x),
-
-      cssColor("--true-line"),
-
-      3
-    );
+      ctx.save();
 
 
-
-    /* TAYLOR */
-
-    drawFunction(
-      x =>
-        taylorValue(
-          x,
-          degree,
-          expansionA
-        ),
-
-      cssColor("--taylor-line"),
-
-      3
-    );
+      ctx.strokeStyle =
+        cssColor(
+          "--asb-pink"
+        );
 
 
+      ctx.setLineDash([
+        6,
+        6
+      ]);
 
-    /* SELECTED POINTS */
 
-    const trueY =
-      trueFunction(
-        selectedX
+      ctx.globalAlpha =
+        0.5;
+
+
+      ctx.beginPath();
+
+
+      ctx.moveTo(
+        px(expansionA),
+        margin.top
       );
 
 
-    const approxY =
-      taylorValue(
-        selectedX,
-        degree,
-        expansionA
-      );
-
-
-    ctx.beginPath();
-
-    ctx.fillStyle =
-      cssColor("--true-line");
-
-    ctx.arc(
-      px(selectedX),
-      py(trueY),
-      5.5,
-      0,
-      Math.PI * 2
-    );
-
-    ctx.fill();
-
-
-    ctx.beginPath();
-
-    ctx.fillStyle =
-      cssColor("--asb-pink");
-
-    ctx.arc(
-      px(selectedX),
-      py(approxY),
-      6,
-      0,
-      Math.PI * 2
-    );
-
-    ctx.fill();
-
-
-
-    /* LABEL a */
-
-    ctx.fillStyle =
-      cssColor("--asb-pink");
-
-    ctx.font =
-      "bold 12px Arial";
-
-    ctx.textAlign =
-      "center";
-
-
-    ctx.fillText(
-      `a = ${cleanNumber(expansionA, 2)}`,
-      px(expansionA),
-      margin.top + 13
-    );
-
-  }
-
-
-
-  /* =========================================================
-     ERROR GRAPH
-  ========================================================= */
-
-  function drawErrorGraph() {
-
-    if (
-      !showError.checked
-    ) {
-      return;
-    }
-
-
-    const canvasData =
-      setupCanvas(
-        errorCanvas
-      );
-
-
-    if (!canvasData) {
-      return;
-    }
-
-
-    const {
-      ctx,
-      width,
-      height
-    } = canvasData;
-
-
-    ctx.clearRect(
-      0,
-      0,
-      width,
-      height
-    );
-
-
-    const margin = {
-      left: 60,
-      right: 22,
-      top: 15,
-      bottom: 38
-    };
-
-
-    const xMin = -3;
-    const xMax = 3;
-
-
-    const errors = [];
-
-
-    for (
-      let i = 0;
-      i <= 500;
-      i++
-    ) {
-
-      const x =
-        xMin +
-        (
-          xMax -
-          xMin
-        ) *
-        i /
-        500;
-
-
-      errors.push(
-        trueFunction(x) -
-        taylorValue(
-          x,
-          degree,
-          expansionA
-        )
-      );
-    }
-
-
-    let maxAbs =
-      Math.max(
-        ...errors.map(
-          value =>
-            Math.abs(value)
-        )
-      );
-
-
-    if (
-      maxAbs <
-      1e-8
-    ) {
-
-      maxAbs = 1;
-    }
-
-
-    maxAbs *= 1.1;
-
-
-    function px(x) {
-
-      return (
-        margin.left +
-        (
-          (x - xMin) /
-          (xMax - xMin)
-        ) *
-        (
-          width -
-          margin.left -
-          margin.right
-        )
-      );
-    }
-
-
-    function py(y) {
-
-      return (
+      ctx.lineTo(
+        px(expansionA),
         height -
-        margin.bottom -
-        (
-          (y + maxAbs) /
-          (2 * maxAbs)
-        ) *
-        (
-          height -
-          margin.top -
-          margin.bottom
-        )
+        margin.bottom
       );
+
+
+      ctx.stroke();
+
+
+      ctx.restore();
+
     }
 
 
 
-    /* ZERO LINE */
+    /* =========================================================
+       TABLE
+    ========================================================== */
 
-    ctx.strokeStyle =
-      "#b3b8c0";
+    function updateTable() {
 
-    ctx.lineWidth =
-      1.5;
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      margin.left,
-      py(0)
-    );
-
-    ctx.lineTo(
-      width -
-      margin.right,
-      py(0)
-    );
-
-    ctx.stroke();
+      tableBody.innerHTML =
+        "";
 
 
+      if (
+        !expressionValid
+      ) {
 
-    /* ERROR */
+        return;
 
-    ctx.beginPath();
-
-    ctx.strokeStyle =
-      "#8c4a78";
-
-    ctx.lineWidth =
-      2.5;
+      }
 
 
-    for (
-      let i = 0;
-      i <= 500;
-      i++
-    ) {
-
-      const x =
-        xMin +
-        (
-          xMax -
-          xMin
-        ) *
-        i /
-        500;
-
-
-      const error =
-        trueFunction(x) -
-        taylorValue(
-          x,
-          degree,
-          expansionA
+      const actual =
+        trueValue(
+          selectedX
         );
 
 
-      if (i === 0) {
+      for (
+        let n = 0;
+        n <= MAX_DEGREE;
+        n++
+      ) {
 
-        ctx.moveTo(
-          px(x),
-          py(error)
-        );
+        const estimate =
+          taylorValue(
+            selectedX,
+            n,
+            expansionA
+          );
 
-      } else {
 
-        ctx.lineTo(
-          px(x),
-          py(error)
+        const error =
+          (
+            Number.isFinite(
+              actual
+            ) &&
+            Number.isFinite(
+              estimate
+            )
+          )
+            ? Math.abs(
+                actual -
+                estimate
+              )
+            : NaN;
+
+
+        const pct =
+          (
+            Number.isFinite(
+              error
+            ) &&
+            Math.abs(
+              actual
+            ) >
+            1e-12
+          )
+            ? (
+                error /
+                Math.abs(
+                  actual
+                ) *
+                100
+              )
+            : NaN;
+
+
+        const row =
+          document.createElement(
+            "tr"
+          );
+
+
+        if (
+          n === degree
+        ) {
+
+          row.classList.add(
+            "active-row"
+          );
+
+        }
+
+
+        row.innerHTML =
+          `
+            <td>
+              T${subscriptNumber(n)}
+            </td>
+
+            <td>
+              ${fixedNumber(estimate)}
+            </td>
+
+            <td>
+              ${fixedNumber(actual)}
+            </td>
+
+            <td>
+              ${fixedNumber(error)}
+            </td>
+
+            <td>
+              ${
+                Number.isFinite(pct)
+                  ? pct.toFixed(3) + "%"
+                  : "N/A"
+              }
+            </td>
+          `;
+
+
+        tableBody.appendChild(
+          row
         );
 
       }
@@ -2542,545 +4685,367 @@
     }
 
 
-    ctx.stroke();
 
+    /* =========================================================
+       METRICS + MESSAGE
+    ========================================================== */
 
+    function updateMetricsAndInsight() {
 
-    /* EXPANSION POINT */
+      const actual =
+        trueValue(
+          selectedX
+        );
 
-    ctx.save();
-
-    ctx.strokeStyle =
-      cssColor("--asb-pink");
-
-    ctx.setLineDash([
-      6,
-      6
-    ]);
-
-    ctx.globalAlpha =
-      0.5;
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      px(expansionA),
-      margin.top
-    );
-
-    ctx.lineTo(
-      px(expansionA),
-      height -
-      margin.bottom
-    );
-
-    ctx.stroke();
-
-    ctx.restore();
-
-  }
-
-
-
-  /* =========================================================
-     TABLE
-  ========================================================= */
-
-  function updateTable() {
-
-    tableBody.innerHTML =
-      "";
-
-
-    const maxDegree =
-      selectedFunction === "exp"
-        ? 10
-        : 3;
-
-
-    const actual =
-      trueFunction(
-        selectedX
-      );
-
-
-    for (
-      let n = 0;
-      n <= maxDegree;
-      n++
-    ) {
 
       const estimate =
         taylorValue(
           selectedX,
-          n,
+          degree,
           expansionA
         );
 
 
       const error =
-        Math.abs(
-          actual -
+        (
+          Number.isFinite(
+            actual
+          ) &&
+          Number.isFinite(
+            estimate
+          )
+        )
+          ? Math.abs(
+              actual -
+              estimate
+            )
+          : NaN;
+
+
+      const pct =
+        (
+          Number.isFinite(
+            error
+          ) &&
+          Math.abs(
+            actual
+          ) >
+          1e-12
+        )
+          ? (
+              error /
+              Math.abs(
+                actual
+              ) *
+              100
+            )
+          : NaN;
+
+
+      actualValue.textContent =
+        fixedNumber(
+          actual
+        );
+
+
+      estimateValue.textContent =
+        fixedNumber(
           estimate
         );
 
 
-      const pct =
-        Math.abs(actual) <
-        1e-10
-          ? null
-          : error /
-            Math.abs(actual) *
-            100;
-
-
-      const row =
-        document.createElement(
-          "tr"
+      absoluteError.textContent =
+        fixedNumber(
+          error
         );
 
+
+      percentageError.textContent =
+        Number.isFinite(
+          pct
+        )
+          ? (
+              pct.toFixed(
+                3
+              ) +
+              "%"
+            )
+          : "N/A";
+
+
+      insightBox.className =
+        "insight";
+
+
+
+      /* FUNCTION NOT DEFINED */
 
       if (
-        n === degree
+        !Number.isFinite(
+          actual
+        )
       ) {
 
-        row.classList.add(
-          "active-row"
+        insightBox.classList.add(
+          "error"
         );
+
+
+        insightBox.innerHTML =
+          `<strong>` +
+          `The function is not real-valued at ` +
+          `x = ${cleanNumber(selectedX, 2)}.` +
+          `</strong> ` +
+          `Try another x-value.`;
+
+
+        return;
 
       }
 
 
-      row.innerHTML = `
-        <td>T${subscriptNumber(n)}</td>
 
-        <td>
-          ${fixedNumber(estimate)}
-        </td>
+      /* TAYLOR NOT DEFINED */
 
-        <td>
-          ${fixedNumber(actual)}
-        </td>
+      if (
+        !Number.isFinite(
+          estimate
+        )
+      ) {
 
-        <td>
-          ${fixedNumber(error)}
-        </td>
-
-        <td>
-          ${
-            pct === null
-              ? "N/A"
-              : pct.toFixed(3) + "%"
-          }
-        </td>
-      `;
+        insightBox.classList.add(
+          "error"
+        );
 
 
-      tableBody.appendChild(
-        row
-      );
+        insightBox.innerHTML =
+          `<strong>` +
+          `The Taylor polynomial cannot be built at ` +
+          `a = ${cleanNumber(expansionA, 2)}.` +
+          `</strong> ` +
+          `The function or one of its derivatives is not real or finite there.`;
 
-    }
 
-  }
+        return;
+
+      }
 
 
 
-  function subscriptNumber(n) {
+      /* EXACT POLYNOMIAL */
 
-    const chars = {
-      "0": "₀",
-      "1": "₁",
-      "2": "₂",
-      "3": "₃",
-      "4": "₄",
-      "5": "₅",
-      "6": "₆",
-      "7": "₇",
-      "8": "₈",
-      "9": "₉"
-    };
+      if (
+        isNextDerivativeZero()
+      ) {
+
+        insightBox.classList.add(
+          "success"
+        );
 
 
-    return String(n)
-      .split("")
-      .map(
-        digit =>
-          chars[digit]
-      )
-      .join("");
-  }
+        insightBox.innerHTML =
+          `<strong>Exact polynomial reached.</strong> ` +
+          `The next derivative is zero, so ` +
+          `T${subscriptNumber(degree)}(x) ` +
+          `matches the original polynomial everywhere.`;
+
+
+        return;
+
+      }
 
 
 
-  /* =========================================================
-     INSIGHT
-  ========================================================= */
+      /* EXACT AT THIS X */
 
-  function updateInsight(
-    actual,
-    estimate
-  ) {
+      if (
+        error <
+        1e-9
+      ) {
 
-    const error =
-      Math.abs(
-        actual -
-        estimate
-      );
+        insightBox.classList.add(
+          "success"
+        );
 
 
-    insightBox.classList.remove(
-      "success"
-    );
+        insightBox.innerHTML =
+          `<strong>Essentially exact at this x-value.</strong> ` +
+          `Try moving x farther from the expansion point.`;
 
 
-    if (
-      selectedFunction === "cubic" &&
-      degree >= 3
-    ) {
+        return;
 
-      insightBox.classList.add(
-        "success"
-      );
-
-      insightBox.innerHTML = `
-        <strong>Exact everywhere.</strong>
-        The degree-3 Taylor polynomial is the original cubic,
-        regardless of the expansion point a.
-      `;
-
-      return;
-    }
+      }
 
 
-    const pct =
-      Math.abs(actual) <
-      1e-10
-        ? null
-        : error /
-          Math.abs(actual) *
-          100;
+
+      /* LESS THAN 1% */
+
+      if (
+        Number.isFinite(
+          pct
+        ) &&
+        pct < 1
+      ) {
+
+        insightBox.classList.add(
+          "success"
+        );
 
 
-    if (
-      error <
-      1e-8
-    ) {
+        insightBox.innerHTML =
+          `<strong>Very close.</strong> ` +
+          `The approximation error is below 1% at this x-value.`;
 
-      insightBox.classList.add(
-        "success"
-      );
+
+        return;
+
+      }
+
+
+
+      /* GENERAL MESSAGE */
 
       insightBox.innerHTML =
-        "<strong>Essentially exact at this x-value.</strong>";
-
-      return;
-    }
-
-
-    if (
-      pct !== null &&
-      pct < 1
-    ) {
-
-      insightBox.classList.add(
-        "success"
-      );
-
-      insightBox.innerHTML = `
-        <strong>Very close.</strong>
-        The approximation error is below 1%.
-      `;
-
-      return;
-    }
-
-
-    insightBox.innerHTML = `
-      Move x closer to the expansion point a,
-      or increase the Taylor degree.
-      Watch how the approximation changes.
-    `;
-
-  }
-
-
-
-  /* =========================================================
-     MAIN UPDATE
-  ========================================================= */
-
-  function updateAll() {
-
-    expansionA =
-      Number(
-        aSlider.value
-      );
-
-
-    selectedX =
-      Number(
-        xSlider.value
-      );
-
-
-    degree =
-      Number(
-        degreeSlider.value
-      );
-
-
-    aValueLabel.textContent =
-      `a = ${expansionA.toFixed(2)}`;
-
-
-    xValueLabel.textContent =
-      `x = ${selectedX.toFixed(2)}`;
-
-
-    degreeValue.textContent =
-      `T${subscriptNumber(degree)} · degree ${degree}`;
-
-
-    updatePageText();
-    updateFormula();
-    updateDerivativeBox();
-
-
-    const actual =
-      trueFunction(
-        selectedX
-      );
-
-
-    const estimate =
-      taylorValue(
-        selectedX,
-        degree,
-        expansionA
-      );
-
-
-    const error =
-      Math.abs(
-        actual -
-        estimate
-      );
-
-
-    const pct =
-      Math.abs(actual) <
-      1e-10
-        ? null
-        : error /
-          Math.abs(actual) *
-          100;
-
-
-    actualValue.textContent =
-      fixedNumber(actual);
-
-
-    estimateValue.textContent =
-      fixedNumber(estimate);
-
-
-    absoluteError.textContent =
-      fixedNumber(error);
-
-
-    percentageError.textContent =
-      pct === null
-        ? "N/A"
-        : `${pct.toFixed(3)}%`;
-
-
-    updateInsight(
-      actual,
-      estimate
-    );
-
-
-    const maxDegree =
-      selectedFunction === "exp"
-        ? 10
-        : 3;
-
-
-    if (
-      degree >= maxDegree
-    ) {
-
-      addDegreeBtn.disabled =
-        true;
-
-      addDegreeBtn.style.opacity =
-        "0.6";
-
-      addDegreeBtn.textContent =
-        selectedFunction === "cubic"
-          ? "Exact cubic reached"
-          : "Maximum degree reached";
-
-    } else {
-
-      addDegreeBtn.disabled =
-        false;
-
-      addDegreeBtn.style.opacity =
-        "1";
-
-      addDegreeBtn.textContent =
-        `+ Add degree ${degree + 1} term`;
+        `Move x closer to a, move a closer to x, ` +
+        `or increase the Taylor degree. ` +
+        `Watch how the approximation changes.`;
 
     }
 
 
-    drawMainGraph();
-    drawErrorGraph();
-    updateTable();
 
-  }
+    /* =========================================================
+       MASTER UPDATE
+    ========================================================== */
 
-
-
-  /* =========================================================
-     FUNCTION SWITCH
-  ========================================================= */
-
-  function configureFunction() {
-
-    selectedFunction =
-      functionSelect.value;
-
-
-    if (
-      selectedFunction === "exp"
-    ) {
-
-      degreeSlider.max =
-        10;
-
-      maxDegreeLabel.textContent =
-        "T₁₀";
-
+    function updateAll() {
 
       if (
-        Number(
-          degreeSlider.value
-        ) > 10
+        !expressionValid
       ) {
 
-        degreeSlider.value =
-          2;
-      }
-
-    } else {
-
-      degreeSlider.max =
-        3;
-
-      maxDegreeLabel.textContent =
-        "T₃";
-
-
-      if (
-        Number(
-          degreeSlider.value
-        ) > 3
-      ) {
-
-        degreeSlider.value =
-          2;
-      }
-
-    }
-
-
-    updateAll();
-
-  }
-
-
-
-  /* =========================================================
-     EVENTS
-  ========================================================= */
-
-  functionSelect.addEventListener(
-    "change",
-    configureFunction
-  );
-
-
-  aSlider.addEventListener(
-    "input",
-    updateAll
-  );
-
-
-  xSlider.addEventListener(
-    "input",
-    updateAll
-  );
-
-
-  degreeSlider.addEventListener(
-    "input",
-    updateAll
-  );
-
-
-  addDegreeBtn.addEventListener(
-    "click",
-    () => {
-
-      const maxDegree =
-        selectedFunction === "exp"
-          ? 10
-          : 3;
-
-
-      if (
-        Number(
-          degreeSlider.value
-        ) < maxDegree
-      ) {
-
-        degreeSlider.value =
-          Number(
-            degreeSlider.value
-          ) + 1;
-
-
-        updateAll();
+        return;
 
       }
 
+
+      expansionA =
+        Number(
+          aSlider.value
+        );
+
+
+      degree =
+        Number(
+          degreeSlider.value
+        );
+
+
+      selectedX =
+        Number(
+          xSlider.value
+        );
+
+
+      aValueLabel.textContent =
+        `a = ${expansionA.toFixed(2)}`;
+
+
+      degreeValue.textContent =
+        `T${subscriptNumber(degree)}`;
+
+
+      xValueLabel.textContent =
+        `x = ${selectedX.toFixed(2)}`;
+
+
+      formulaDisplay.textContent =
+        buildTaylorFormula();
+
+
+      updateDerivativeBox();
+
+
+      updateMetricsAndInsight();
+
+
+
+      /* ADD TERM BUTTON */
+
+      if (
+        degree >=
+        MAX_DEGREE
+      ) {
+
+        addDegreeBtn.disabled =
+          true;
+
+
+        addDegreeBtn.textContent =
+          "Maximum degree reached";
+
+      } else if (
+        isNextDerivativeZero()
+      ) {
+
+        addDegreeBtn.disabled =
+          true;
+
+
+        addDegreeBtn.textContent =
+          "Exact polynomial reached";
+
+      } else {
+
+        addDegreeBtn.disabled =
+          false;
+
+
+        addDegreeBtn.textContent =
+          `+ Add degree ${degree + 1} term`;
+
+      }
+
+
+
+      drawMainGraph();
+
+
+      drawErrorGraph();
+
+
+      updateTable();
+
     }
-  );
 
 
-  resetBtn.addEventListener(
-    "click",
-    () => {
+
+    /* =========================================================
+       RESET
+    ========================================================== */
+
+    function resetExplorer() {
+
+      functionInput.value =
+        "e^x";
+
 
       aSlider.value =
         0;
+
+
+      degreeSlider.value =
+        2;
+
 
       xSlider.value =
         1.5;
 
 
-      degreeSlider.value =
-        selectedFunction === "exp"
-          ? 2
-          : 0;
-
-
       showError.checked =
         false;
+
 
       showTable.checked =
         false;
@@ -3089,67 +5054,270 @@
       errorSection.style.display =
         "none";
 
+
       tableSection.style.display =
         "none";
 
 
-      updateAll();
+      parseCurrentExpression();
 
     }
-  );
-
-
-  showError.addEventListener(
-    "change",
-    () => {
-
-      errorSection.style.display =
-        showError.checked
-          ? "block"
-          : "none";
-
-
-      updateAll();
-
-    }
-  );
-
-
-  showTable.addEventListener(
-    "change",
-    () => {
-
-      tableSection.style.display =
-        showTable.checked
-          ? "block"
-          : "none";
-
-
-      updateTable();
-
-    }
-  );
-
-
-  window.addEventListener(
-    "resize",
-    () => {
-
-      drawMainGraph();
-      drawErrorGraph();
-
-    }
-  );
 
 
 
-  /* =========================================================
-     INITIALISE
-  ========================================================= */
+    /* =========================================================
+       LIVE FUNCTION INPUT
+    ========================================================== */
 
-  configureFunction();
+    functionInput.addEventListener(
 
-</script>
+      "input",
+
+      () => {
+
+        clearTimeout(
+          typingTimer
+        );
+
+
+        functionStatus.textContent =
+          "Reading function…";
+
+
+        functionStatus.className =
+          "function-status";
+
+
+        typingTimer =
+          setTimeout(
+            parseCurrentExpression,
+            180
+          );
+
+      }
+
+    );
+
+
+
+    /* =========================================================
+       PRESET BUTTONS
+    ========================================================== */
+
+    document
+      .querySelectorAll(
+        ".preset-btn"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+
+            "click",
+
+            () => {
+
+              functionInput.value =
+                button.dataset.expression;
+
+
+              parseCurrentExpression();
+
+            }
+
+          );
+
+        }
+      );
+
+
+
+    /* =========================================================
+       SLIDERS
+    ========================================================== */
+
+    aSlider.addEventListener(
+      "input",
+      updateAll
+    );
+
+
+    degreeSlider.addEventListener(
+      "input",
+      updateAll
+    );
+
+
+    xSlider.addEventListener(
+      "input",
+      updateAll
+    );
+
+
+
+    /* =========================================================
+       ADD DEGREE
+    ========================================================== */
+
+    addDegreeBtn.addEventListener(
+
+      "click",
+
+      () => {
+
+        const next =
+          Math.min(
+
+            MAX_DEGREE,
+
+            Number(
+              degreeSlider.value
+            ) +
+            1
+
+          );
+
+
+        degreeSlider.value =
+          next;
+
+
+        updateAll();
+
+      }
+
+    );
+
+
+
+    /* =========================================================
+       RESET BUTTON
+    ========================================================== */
+
+    resetBtn.addEventListener(
+
+      "click",
+
+      resetExplorer
+
+    );
+
+
+
+    /* =========================================================
+       SHOW ERROR GRAPH
+    ========================================================== */
+
+    showError.addEventListener(
+
+      "change",
+
+      () => {
+
+        errorSection.style.display =
+          showError.checked
+            ? "block"
+            : "none";
+
+
+        if (
+          showError.checked
+        ) {
+
+          requestAnimationFrame(
+            drawErrorGraph
+          );
+
+        }
+
+      }
+
+    );
+
+
+
+    /* =========================================================
+       SHOW TABLE
+    ========================================================== */
+
+    showTable.addEventListener(
+
+      "change",
+
+      () => {
+
+        tableSection.style.display =
+          showTable.checked
+            ? "block"
+            : "none";
+
+
+        if (
+          showTable.checked
+        ) {
+
+          updateTable();
+
+        }
+
+      }
+
+    );
+
+
+
+    /* =========================================================
+       WINDOW RESIZE
+    ========================================================== */
+
+    window.addEventListener(
+
+      "resize",
+
+      () => {
+
+        drawMainGraph();
+
+        drawErrorGraph();
+
+      }
+
+    );
+
+
+
+    /* =========================================================
+       INITIALISE
+    ========================================================== */
+
+    window.addEventListener(
+
+      "load",
+
+      () => {
+
+        if (
+          typeof math ===
+          "undefined"
+        ) {
+
+          setExpressionError(
+            "Math.js did not load. Check your internet connection and refresh the page."
+          );
+
+
+          return;
+
+        }
+
+
+        parseCurrentExpression();
+
+      }
+
+    );
+
+  </script>
 
 </body>
 </html>
